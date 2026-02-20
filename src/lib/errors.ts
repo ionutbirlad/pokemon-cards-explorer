@@ -28,10 +28,20 @@ export function toApiClientError(input: {
   data?: unknown;
 }): ApiClientError {
   const message = input.serverMessage?.trim() || getErrorMessage(input.status, input.kind);
+
   return new ApiClientError({
     status: input.status,
     kind: input.kind,
     message,
     data: input.data,
   });
+}
+
+export function isApiClientError(error: unknown): error is ApiClientError {
+  return error instanceof ApiClientError;
+}
+
+export function isGlobalError(error: unknown): boolean {
+  if (!isApiClientError(error)) return false;
+  return error.kind === "network" || error.status >= 500;
 }
