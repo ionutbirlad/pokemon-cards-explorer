@@ -35,6 +35,9 @@ export default tseslint.config(
     },
     settings: {
       react: { version: "detect" },
+      "import/resolver": {
+        typescript: true,
+      },
     },
     rules: {
       // React 17+ no need React in scope
