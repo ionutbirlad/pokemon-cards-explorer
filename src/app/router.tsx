@@ -12,7 +12,7 @@ export const router = createBrowserRouter([
       { path: "/", element: <Navigate to="/pokemons" replace /> },
       { path: "/pokemons", element: <DeckPage /> },
       { path: "/pokemons/:id", element: <DetailPage /> },
+      { path: "*", element: <NotFoundPage /> },
     ],
   },
-  { path: "*", element: <NotFoundPage /> },
 ]);
