@@ -1,7 +1,7 @@
-@use "./tokens/colors";
-@use "./tokens/spacing";
-@use "./tokens/radius";
-@use "./tokens/typography";
+@import "./tokens/colors";
+@import "./tokens/spacing";
+@import "./tokens/radius";
+@import "./tokens/typography";
 
-@use "./foundations/reset";
-@use "./foundations/base";
+@import "./foundations/reset";
+@import "./foundations/base";

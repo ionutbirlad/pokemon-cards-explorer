@@ -1,0 +1,70 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  height: 40px;
+  padding-inline: 32px;
+  padding-block: 8px;
+
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+
+  font-family: var(--font-main);
+  font-size: var(--s-text-label-1-size);
+  font-weight: 600;
+  line-height: var(--s-text-label-1-line-height);
+  white-space: nowrap;
+
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.button--active {
+  background-color: var(--s-surface-1-on-color);
+  color: var(--s-surface-1-color);
+}
+
+.button--active:hover {
+  background-color: var(--s-surface-1-color-contrast);
+}
+
+.button--active .button__icon {
+  fill: var(--s-surface-1-color);
+}
+
+.button--hover {
+  background-color: var(--s-surface-1-color-contrast);
+  color: var(--s-surface-1-color);
+}
+
+.button--hover .button__icon {
+  fill: var(--s-surface-1-color);
+}
+
+.button--disabled {
+  background-color: var(--s-surface-2-color-contrast);
+  color: var(--s-surface-1-color);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.button--disabled .button__icon {
+  fill: var(--s-surface-1-color);
+  opacity: 0.5;
+}
+
+.button__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.button__label {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
