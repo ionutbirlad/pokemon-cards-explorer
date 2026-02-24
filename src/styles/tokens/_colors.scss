@@ -1,0 +1,29 @@
+:root {
+  /* ========================================
+   * Primitive tokens
+   * ====================================== */
+
+  /* Neutrals */
+  --p-color-neutral-0: #ffffff;
+  --p-color-neutral-10: #f2f4f8;
+  --p-color-neutral-50: #9ba8ba;
+  --p-color-neutral-80: #101a2e;
+
+  /* Red */
+  --p-color-red-80: #8c0202;
+
+  /* Alpha */
+  --p-alpha-75: rgba(16, 26, 46, 0.05);
+
+  /* ========================================
+   * Semantic tokens
+   * ====================================== */
+
+  --color-surface-1: var(--p-color-neutral-0);
+  --color-surface-2: var(--p-color-neutral-10);
+
+  --color-on-surface: var(--p-color-neutral-80);
+
+  --color-alert: var(--p-color-red-80);
+  --color-on-alert: #ffffff;
+}
