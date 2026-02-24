@@ -1,6 +1,8 @@
-import styles from "./Button.module.scss";
-import StarIcon from "@/assets/icons/star.svg?react";
 import type { ReactNode } from "react";
+
+import StarIcon from "@/assets/icons/star.svg?react";
+
+import styles from "./Button.module.scss";
 
 type ButtonStatus = "active" | "disabled";
 
