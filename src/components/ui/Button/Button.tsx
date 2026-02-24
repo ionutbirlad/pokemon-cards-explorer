@@ -1,7 +1,7 @@
 import styles from "./Button.module.scss";
 import StarIcon from "@/assets/icons/star.svg?react";
 
-type ButtonStatus = "active" | "hover" | "disabled";
+type ButtonStatus = "active" | "disabled";
 
 type ButtonProps = {
   children: React.ReactNode;

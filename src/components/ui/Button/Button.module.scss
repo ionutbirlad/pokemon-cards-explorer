@@ -1,68 +1,63 @@
+@use "@/styles/tokens/typography" as t;
+
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-l);
 
   height: 40px;
-  padding-inline: 32px;
-  padding-block: 8px;
+  padding-inline: var(--space-2xl);
+  padding-block: var(--space-l);
 
   border-radius: var(--radius-pill);
   border: none;
   cursor: pointer;
 
-  font-family: var(--font-main);
-  font-size: var(--s-text-label-1-size);
-  font-weight: 600;
-  line-height: var(--s-text-label-1-line-height);
+  @include t.label-1;
   white-space: nowrap;
 
-  transition:
-    background-color 0.2s ease,
-    opacity 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
+/* ---- Active ---- */
 .button--active {
-  background-color: var(--s-surface-1-on-color);
-  color: var(--s-surface-1-color);
+  background-color: var(--color-on-surface-1);
+  color: var(--color-surface-1);
 }
 
 .button--active:hover {
-  background-color: var(--s-surface-1-color-contrast);
+  background-color: var(--color-surface-1-contrast);
 }
 
-.button--active .button__icon {
-  fill: var(--s-surface-1-color);
-}
-
+/* ---- Hover (static variant) ---- */
 .button--hover {
-  background-color: var(--s-surface-1-color-contrast);
-  color: var(--s-surface-1-color);
+  background-color: var(--color-surface-1-contrast);
+  color: var(--color-surface-1);
 }
 
-.button--hover .button__icon {
-  fill: var(--s-surface-1-color);
-}
-
+/* ---- Disabled ---- */
 .button--disabled {
-  background-color: var(--s-surface-2-color-contrast);
-  color: var(--s-surface-1-color);
+  background-color: var(--color-surface-2-contrast);
+  color: var(--color-surface-1);
   cursor: not-allowed;
   pointer-events: none;
 }
 
+/* ---- Icon ---- */
+.button__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  fill: currentColor;
+  display: block;
+}
+
 .button--disabled .button__icon {
-  fill: var(--s-surface-1-color);
   opacity: 0.5;
 }
 
-.button__icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-}
-
+/* ---- Label ---- */
 .button__label {
   font-family: inherit;
   font-size: inherit;
