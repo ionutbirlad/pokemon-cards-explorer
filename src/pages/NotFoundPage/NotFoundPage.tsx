@@ -1,5 +1,5 @@
-import "./NotFoundPage.module.scss";
+import styles from "./NotFoundPage.module.scss";
 
 export default function NotFoundPage() {
-  return <section>NOT FOUND PAGE HERE</section>;
+  return <section className={styles.page}>NOT FOUND PAGE HERE</section>;
 }

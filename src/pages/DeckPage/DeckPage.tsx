@@ -1,5 +1,5 @@
-import "./DeckPage.module.scss";
+import styles from "./DeckPage.module.scss";
 
 export default function DeckPage() {
-  return <section>DECK PAGE HERE</section>;
+  return <section className={styles.page}>DECK PAGE HERE</section>;
 }

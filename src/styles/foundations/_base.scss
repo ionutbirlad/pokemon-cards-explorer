@@ -1,0 +1,27 @@
+/* Layout-level variables */
+:root {
+  --app-max-width: 1100px;
+  --app-gutter: var(--space-xl);
+  --header-height: 72px;
+  --footer-height: 64px;
+}
+
+/* Body defaults */
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-surface-2);
+  color: var(--color-on-surface);
+}
+
+/* Root layout helpers */
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main container helper (optional utility) */
+.container {
+  width: min(100% - (var(--app-gutter) * 2), var(--app-max-width));
+  margin-inline: auto;
+}

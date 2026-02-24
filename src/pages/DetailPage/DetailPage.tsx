@@ -1,5 +1,5 @@
-import "./DetailPage.module.scss";
+import styles from "./DetailPage.module.scss";
 
 export default function DetailPage() {
-  return <section>DETAIL PAGE HERE</section>;
+  return <section className={styles.page}>DETAIL PAGE HERE</section>;
 }
