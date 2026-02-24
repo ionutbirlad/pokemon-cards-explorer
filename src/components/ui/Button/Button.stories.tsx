@@ -23,13 +23,6 @@ export const Active: Story = {
   },
 };
 
-export const Hover: Story = {
-  args: {
-    children: "TEXT",
-    status: "hover",
-  },
-};
-
 export const Disabled: Story = {
   args: {
     children: "TEXT",
