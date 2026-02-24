@@ -18,48 +18,48 @@
   white-space: nowrap;
 
   transition: background-color 0.2s ease;
-}
 
-/* ---- Active ---- */
-.button--active {
-  background-color: var(--color-on-surface-1);
-  color: var(--color-surface-1);
-}
+  // ---- Active ----
+  &--active {
+    background-color: var(--color-on-surface-1);
+    color: var(--color-surface-1);
 
-.button--active:hover {
-  background-color: var(--color-surface-1-contrast);
-}
+    &:hover {
+      background-color: var(--color-surface-1-contrast);
+    }
+  }
 
-/* ---- Hover (static variant) ---- */
-.button--hover {
-  background-color: var(--color-surface-1-contrast);
-  color: var(--color-surface-1);
-}
+  // ---- Hover (static variant) ----
+  &--hover {
+    background-color: var(--color-surface-1-contrast);
+    color: var(--color-surface-1);
+  }
 
-/* ---- Disabled ---- */
-.button--disabled {
-  background-color: var(--color-surface-2-contrast);
-  color: var(--color-surface-1);
-  cursor: not-allowed;
-  pointer-events: none;
-}
+  // ---- Disabled ----
+  &--disabled {
+    background-color: var(--color-surface-2-contrast);
+    color: var(--color-surface-1);
+    cursor: not-allowed;
+    pointer-events: none;
 
-/* ---- Icon ---- */
-.button__icon {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  fill: currentColor;
-  display: block;
-}
+    .button__icon {
+      opacity: 0.5;
+    }
+  }
 
-.button--disabled .button__icon {
-  opacity: 0.5;
-}
+  // ---- Icon ----
+  &__icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    fill: currentColor;
+    display: block;
+  }
 
-/* ---- Label ---- */
-.button__label {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
+  // ---- Label ----
+  &__label {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+  }
 }
