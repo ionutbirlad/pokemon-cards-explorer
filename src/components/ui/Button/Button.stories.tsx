@@ -8,7 +8,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     status: {
       control: "select",
-      options: ["active", "hover", "disabled"],
+      options: ["active", "disabled"],
     },
   },
 };

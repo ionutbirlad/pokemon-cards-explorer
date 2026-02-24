@@ -1,10 +1,11 @@
 import styles from "./Button.module.scss";
 import StarIcon from "@/assets/icons/star.svg?react";
+import type { ReactNode } from "react";
 
 type ButtonStatus = "active" | "disabled";
 
 type ButtonProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   status?: ButtonStatus;
   onClick?: () => void;
 };
