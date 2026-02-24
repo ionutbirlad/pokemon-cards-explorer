@@ -7,20 +7,19 @@
  * Typography mixins
  * ----------------------------- */
 
+/* Headings */
 @mixin heading-1 {
   font-family: var(--font-main);
   font-size: 32px;
   line-height: 1.2;
   font-weight: 700;
 }
-
 @mixin heading-2 {
   font-family: var(--font-main);
   font-size: 24px;
   line-height: 1.2;
   font-weight: 700;
 }
-
 @mixin heading-3 {
   font-family: var(--font-main);
   font-size: 16px;
@@ -28,36 +27,35 @@
   font-weight: 700;
 }
 
+/* Paragraphs */
 @mixin paragraph-1 {
-  font-family: var(--font-secondary);
+  font-family: var(--font-main);
   font-size: 18px;
   line-height: 1.2;
   font-weight: 400;
 }
-
 @mixin paragraph-2 {
-  font-family: var(--font-secondary);
+  font-family: var(--font-main);
   font-size: 16px;
   line-height: 1.2;
   font-weight: 400;
 }
-
 @mixin paragraph-3 {
-  font-family: var(--font-secondary);
+  font-family: var(--font-main);
   font-size: 14px;
   line-height: 1.2;
   font-weight: 400;
 }
 
+/* Labels */
 @mixin label-1 {
-  font-family: var(--font-main);
+  font-family: var(--font-secondary);
   font-size: 16px;
   line-height: 1.2;
   font-weight: 600;
 }
-
 @mixin label-2 {
-  font-family: var(--font-main);
+  font-family: var(--font-secondary);
   font-size: 12px;
   line-height: 1.2;
   font-weight: 600;
