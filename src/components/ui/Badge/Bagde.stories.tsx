@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Badge from "./Badge";
+
 import WaterIcon from "@/assets/icons/water_drop.svg?react";
+
+import Badge from "./Badge";
 
 const meta: Meta<typeof Badge> = {
   title: "UI/Badge",

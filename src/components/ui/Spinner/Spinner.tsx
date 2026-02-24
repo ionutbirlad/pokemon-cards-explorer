@@ -1,5 +1,6 @@
-import styles from "./Spinner.module.scss";
 import PokeballIcon from "@/assets/icons/pokeball.svg?react";
+
+import styles from "./Spinner.module.scss";
 
 type SpinnerProps = {
   size?: number;
