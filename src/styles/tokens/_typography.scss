@@ -55,12 +55,14 @@
 @mixin label-1 {
   font-family: var(--font-secondary);
   font-size: 16px;
-  line-height: 1.2;
+  // Different from Figma: avoid bad alignment since all labels are on single lines
+  line-height: 1;
   font-weight: 600;
 }
 @mixin label-2 {
   font-family: var(--font-secondary);
   font-size: 12px;
-  line-height: 1.2;
+  // Different from Figma: avoid bad alignment since all labels are on single lines
+  line-height: 1;
   font-weight: 600;
 }
