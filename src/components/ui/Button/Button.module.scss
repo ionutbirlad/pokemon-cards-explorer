@@ -4,11 +4,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--p-size-3);
+  gap: var(--size-l);
 
   height: 40px;
-  padding-inline: var(--p-size-5);
-  padding-block: var(--p-size-3);
+  padding-inline: var(--size-2xl);
+  padding-block: var(--size-l);
 
   border-radius: var(--radius-infinite);
   border: none;
