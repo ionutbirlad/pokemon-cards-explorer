@@ -16,15 +16,15 @@
   white-space: nowrap;
 
   &--light {
-    background-color: var(--color-surface-1);
-    color: var(--color-on-surface-1);
-    border-color: var(--color-on-surface-1-contrast-dark);
+    background-color: var(--color-on-surface-1-contrast-light);
+    color: var(--color-surface-1);
+    border-color: var(--color-on-surface-1-contrast-light);
   }
 
   &--dark {
     background-color: var(--color-on-surface-1);
     color: var(--color-surface-1);
-    border-color: var(--color-surface-1);
+    border-color: var(--color-on-surface-1-contrast-light);
   }
 
   &__icon {
