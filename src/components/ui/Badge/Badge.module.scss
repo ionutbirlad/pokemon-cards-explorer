@@ -3,11 +3,11 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-m);
+  gap: var(--size-2);
 
   height: 22px;
-  padding-inline: var(--space-l);
-  padding-block: var(--space-m);
+  padding-inline: var(--size-3);
+  padding-block: var(--size-2);
 
   border-radius: 32px;
   border: 1px solid;
