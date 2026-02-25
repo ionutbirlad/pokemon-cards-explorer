@@ -1,0 +1,15 @@
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--size-xl);
+
+  background-color: var(--color-surface-1);
+  box-shadow: var(--shadow-card);
+}
+
+.header__logo {
+  height: 64px;
+  width: auto;
+}

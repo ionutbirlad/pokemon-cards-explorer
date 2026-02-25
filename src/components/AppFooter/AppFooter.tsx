@@ -1,9 +1,9 @@
-import "./AppFooter.module.scss";
+import styles from "./AppFooter.module.scss";
 
 export default function AppFooter() {
   return (
-    <footer>
-      <div>APP FOOTER HERE</div>
+    <footer className={styles.footer}>
+      <span className={styles.footer__text}>TheCardGame®</span>
     </footer>
   );
 }
