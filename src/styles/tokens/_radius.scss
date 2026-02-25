@@ -1,6 +1,6 @@
 :root {
-  --radius-half: 4px;
-  --radius-main: 8px;
-  --radius-double: 16px;
-  --radius-pill: 1000px;
+  --radius-half: var(--size-2);
+  --radius-main: var(--size-3);
+  --radius-double: var(--size-4);
+  --radius-infinite: var(--size-100);
 }
