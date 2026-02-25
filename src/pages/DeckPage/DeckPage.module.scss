@@ -1,9 +1,9 @@
 .page {
-  padding-block: var(--size-5);
+  padding-block: var(--p-size-5);
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: var(--size-4);
+  gap: var(--p-size-4);
 }
