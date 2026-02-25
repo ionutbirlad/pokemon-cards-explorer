@@ -1,0 +1,15 @@
+@use "@/styles/tokens/typography" as t;
+
+.footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--size-xl);
+  background-color: var(--color-on-surface-2-contrast-dark);
+}
+
+.footer__text {
+  @include t.paragraph-3;
+  color: var(--color-on-surface-2);
+}
