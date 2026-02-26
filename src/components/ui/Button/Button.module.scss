@@ -4,13 +4,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-l);
+  gap: var(--size-l);
 
   height: 40px;
-  padding-inline: var(--space-2xl);
-  padding-block: var(--space-l);
+  padding-inline: var(--size-2xl);
+  padding-block: var(--size-l);
 
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-infinite);
   border: none;
   cursor: pointer;
 

@@ -3,22 +3,22 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-m);
+  gap: var(--size-m);
 
   height: 22px;
-  padding-inline: var(--space-l);
-  padding-block: var(--space-m);
+  padding-inline: var(--size-l);
+  padding-block: var(--size-m);
 
-  border-radius: 32px;
-  border: 1px solid;
+  border-radius: var(--size-2xl);
+  border: var(--size-s) solid;
 
   @include t.label-2;
   white-space: nowrap;
 
   &--light {
-    background-color: var(--color-surface-1);
-    color: var(--color-on-surface-1);
-    border-color: var(--color-on-surface-1-muted);
+    background-color: var(--color-on-surface-1-contrast-dark);
+    color: var(--color-surface-1);
+    border-color: var(--color-on-surface-1-contrast-light);
   }
 
   &--dark {

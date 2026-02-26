@@ -1,0 +1,47 @@
+@use "@/styles/tokens/typography" as t;
+
+.item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-s);
+
+  flex: 1;
+  padding-inline: var(--size-m);
+  padding-block: var(--size-l);
+
+  &--default {
+    background-color: transparent;
+    color: var(--color-on-surface-1);
+  }
+
+  &--warning {
+    background-color: var(--color-alert);
+    color: var(--color-on-alert);
+  }
+
+  &--expired {
+    background-color: var(--color-surface-1-contrast);
+    color: var(--color-on-alert);
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+  }
+
+  &__label {
+    @include t.label-2;
+    color: inherit;
+  }
+}

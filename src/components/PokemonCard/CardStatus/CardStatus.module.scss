@@ -1,0 +1,18 @@
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-l);
+
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-infinite);
+
+  background-color: var(--color-on-surface-1-contrast-light);
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    color: var(--color-surface-1);
+  }
+}
