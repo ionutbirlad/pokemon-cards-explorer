@@ -1,0 +1,30 @@
+@use "@/styles/tokens/typography" as t;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+
+  background-color: var(--color-surface-1);
+  border-radius: var(--radius-main);
+  border: 1px solid var(--color-on-surface-1-contrast-dark);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-l);
+    padding: var(--size-xl);
+  }
+
+  &__name {
+    @include t.heading-3;
+    color: var(--color-on-surface-1);
+  }
+
+  &__description {
+    @include t.paragraph-3;
+    color: var(--color-on-surface-1);
+  }
+}
