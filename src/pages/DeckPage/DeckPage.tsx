@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
+import LoadingOverlay from "@/components/LoadingOverlay/LoadingOverlay";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import TextBlock from "@/components/ui/TextBlock/TextBlock";
 import { usePokemonList } from "@/hooks/pokemon/usePokemonList";
@@ -9,13 +10,15 @@ import styles from "./DeckPage.module.scss";
 
 export default function DeckPage() {
   const navigate = useNavigate();
-  const { data: pokemons, isError, error } = usePokemonList();
+  const { data: pokemons, isError, error, isLoading } = usePokemonList();
 
   const isLocalError = isError && !isGlobalError(error);
 
   const errorMessage = isApiClientError(error)
     ? error.message
     : "Something went wrong. Please try again.";
+
+  if (isLoading) return <LoadingOverlay />;
 
   return (
     <section className={styles.page}>
