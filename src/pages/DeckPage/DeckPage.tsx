@@ -9,7 +9,6 @@ import styles from "./DeckPage.module.scss";
 export default function DeckPage() {
   const navigate = useNavigate();
   const { data: pokemons, isError } = usePokemonList();
-  console.log("pokemons", pokemons);
 
   return (
     <section className={styles.page}>

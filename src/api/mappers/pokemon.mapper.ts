@@ -1,16 +1,16 @@
-import {
-  type PokemonDetail,
-  type PokemonEnergy,
-  type PokemonListItem,
-  type PokemonTypology,
-  type PokemonVulnerability,
+import type {
+  PokemonDetail,
+  PokemonEnergy,
+  PokemonListItem,
+  PokemonTypology,
+  PokemonVulnerability,
 } from "@/types/domain/pokemon";
-import {
-  type RemotePokemonDetail as PokemonRemote,
-  type RemotePokemonEnergy,
-  type RemotePokemonListItem,
-  type RemotePokemonTypology,
-  type RemotePokemonVulnerability,
+import type {
+  RemotePokemonDetail as PokemonRemote,
+  RemotePokemonEnergy,
+  RemotePokemonListItem,
+  RemotePokemonTypology,
+  RemotePokemonVulnerability,
 } from "@/types/remote/pokemon";
 
 export function mapRemotePokemonTypology(t: RemotePokemonTypology): PokemonTypology {
