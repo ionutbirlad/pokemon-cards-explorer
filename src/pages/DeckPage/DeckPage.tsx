@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import TextBlock from "@/components/ui/TextBlock/TextBlock";
 import { usePokemonList } from "@/hooks/pokemon/usePokemonList";
-import { isApiClientError } from "@/lib/errors";
+import { isApiClientError, isGlobalError } from "@/lib/errors";
 
 import styles from "./DeckPage.module.scss";
 
 export default function DeckPage() {
   const navigate = useNavigate();
   const { data: pokemons, isError, error } = usePokemonList();
+
+  const isLocalError = isError && !isGlobalError(error);
 
   const errorMessage = isApiClientError(error)
     ? error.message
@@ -23,7 +25,7 @@ export default function DeckPage() {
           description="Dai un'occhiata al più grande e completo database di carte Pokémon! Troverai carte di ogni espansione e tante curiosità sulle tue collezioni. Clicca sui tuoi Pokémon per scoprire di più su di loro!"
         />
 
-        {isError && (
+        {isLocalError && (
           <TextBlock
             variant="empty"
             description={errorMessage}
