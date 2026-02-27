@@ -27,6 +27,9 @@ export const handlers = [
     // Unprocessable (422) → LOCALE
     // return HttpResponse.json({ message: "Invalid request payload." }, { status: 422 });
 
+    // Slow response → non è un errore, testa loading UX
+    // await delay(3000);
+
     const items = getPokemonList();
     return HttpResponse.json(items);
   }),
