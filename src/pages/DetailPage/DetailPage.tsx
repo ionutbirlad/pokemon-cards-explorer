@@ -1,14 +1,12 @@
 import DOMPurify from "dompurify";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { getTypologyIcon } from "@/api/mappers/typology.mapper";
 import ArrowBackIcon from "@/assets/icons/arrow_back.svg?react";
-import EcoIcon from "@/assets/icons/eco.svg?react";
-import Equalizer from "@/assets/icons/equalizer.svg?react";
+import EqualizerIcon from "@/assets/icons/equalizer.svg?react";
 import HeartIcon from "@/assets/icons/favorite.svg?react";
-import HeartOutlineIcon from "@/assets/icons/favorite_outline.svg?react";
 import SkullOutlineIcon from "@/assets/icons/skull_outline.svg?react";
 import StarIcon from "@/assets/icons/star.svg?react";
-import WaterDropIcon from "@/assets/icons/water_drop.svg?react";
 import extraDetails from "@/assets/images/general/extra_details.png";
 import LoadingOverlay from "@/components/LoadingOverlay/LoadingOverlay";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
@@ -19,15 +17,6 @@ import { isApiClientError, isGlobalError } from "@/lib/errors";
 import { getCardStatus } from "@/utils/getCardStatus";
 
 import styles from "./DetailPage.module.scss";
-
-// Map icon_name from API to imported SVG component
-const typologyIconMap: Record<string, React.ReactNode> = {
-  water_drop: <WaterDropIcon />,
-  eco: <EcoIcon />,
-  star: <StarIcon />,
-  local_fire_department: <WaterDropIcon />, // placeholder, replace with fire icon if available
-  equalizer: <Equalizer />,
-};
 
 export default function DetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -53,19 +42,25 @@ export default function DetailPage() {
   const cardStatus = pokemon ? getCardStatus(pokemon.healthPoints) : "default";
 
   const typologyIcon = pokemon
-    ? (typologyIconMap[pokemon.typology.iconName] ?? <WaterDropIcon />)
+    ? getTypologyIcon(pokemon.typology.iconName, pokemon.typology.iconUrl)
     : null;
 
-  const energyIcon = <StarIcon />;
+  const vulnerabilityIcon = pokemon ? (
+    <img
+      src={pokemon.vulnerability.iconUrl}
+      alt="vulnerability"
+      style={{ width: "100%", height: "100%" }}
+    />
+  ) : null;
 
   const widgetItems = pokemon
     ? [
-        { icon: <Equalizer />, label: `LV. ${pokemon.level}` },
-        { icon: <EcoIcon />, label: `VUL. ${pokemon.vulnerability.value}` },
+        { icon: <EqualizerIcon />, label: `LV. ${pokemon.level}` },
+        { icon: vulnerabilityIcon, label: `VUL. ${pokemon.vulnerability.value}` },
         {
-          icon: <HeartIcon />,
-          iconOutline: cardStatus === "expired" ? <SkullOutlineIcon /> : <HeartOutlineIcon />,
+          icon: cardStatus === "expired" ? <SkullOutlineIcon /> : <HeartIcon />,
           label: `PS. ${pokemon.healthPoints}`,
+          status: cardStatus,
         },
       ]
     : [];
@@ -103,7 +98,7 @@ export default function DetailPage() {
                   </h1>
 
                   {/* Long description — sanitized HTML */}
-                  {/* NOTE: DOMPurify sanitization required here in production for untrusted content */}
+                  {/* NOTE: in production with untrusted content, DOMPurify sanitization is required */}
                   <div
                     className={styles.panel__description}
                     dangerouslySetInnerHTML={{
@@ -125,8 +120,8 @@ export default function DetailPage() {
                   imageSrc={pokemon.imageUrl}
                   typologyName={pokemon.typology.name}
                   typologyIcon={typologyIcon}
-                  footerLabel={pokemon.rarity.replace("_", " ").toUpperCase()}
-                  footerIcons={[typologyIcon, energyIcon]}
+                  footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
+                  footerIcons={[typologyIcon, <StarIcon />]}
                   items={widgetItems}
                   status={cardStatus}
                 />
@@ -137,7 +132,7 @@ export default function DetailPage() {
             )}
           </div>
 
-          {/* Related section — placeholder with extra_details image */}
+          {/* Related — placeholder image until endpoint is implemented */}
           {pokemon && (
             <div className={styles.related}>
               <img src={extraDetails} alt="Extra details" className={styles.related__image} />
