@@ -9,23 +9,20 @@ export const handlers = [
   // ---- GET /api/items ----
   http.get(`${API_BASE}/items`, async () => {
     // --- Error simulations (uncomment to test) ---
-    // Network error → GLOBAL
-    // return HttpResponse.error();
+    // Server error (500) → GLOBALE
+    // return HttpResponse.json({ message: "Internal server error." }, { status: 500 });
 
-    // Server error (500) → GLOBAL
-    // return new HttpResponse(null, { status: 500 });
+    // Not found (404) → LOCALE
+    // return HttpResponse.json({ message: "Pokemon not found." }, { status: 404 });
 
-    // Unauthorized (401) → LOCAL
-    // return new HttpResponse(null, { status: 401 });
+    // Unauthorized (401) → LOCALE
+    // return HttpResponse.json({ message: "Unauthorized. Please login." }, { status: 401 });
 
-    // Forbidden (403) → LOCAL
-    // return new HttpResponse(null, { status: 403 });
+    // Forbidden (403) → LOCALE
+    // return HttpResponse.json({ message: "You don't have permission to access this resource." }, { status: 403 });
 
-    // Empty list → LOCAL (dato valido, non un errore)
-    // return HttpResponse.json([]);
-
-    // Slow response → non è un errore, testa loading UX
-    // await delay(3000);
+    // Unprocessable (422) → LOCALE
+    // return HttpResponse.json({ message: "Invalid request payload." }, { status: 422 });
 
     const items = getPokemonList();
     return HttpResponse.json(items);

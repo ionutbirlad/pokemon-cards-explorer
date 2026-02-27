@@ -3,12 +3,17 @@ import { useNavigate } from "react-router-dom";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import TextBlock from "@/components/ui/TextBlock/TextBlock";
 import { usePokemonList } from "@/hooks/pokemon/usePokemonList";
+import { isApiClientError } from "@/lib/errors";
 
 import styles from "./DeckPage.module.scss";
 
 export default function DeckPage() {
   const navigate = useNavigate();
-  const { data: pokemons, isError } = usePokemonList();
+  const { data: pokemons, isError, error } = usePokemonList();
+
+  const errorMessage = isApiClientError(error)
+    ? error.message
+    : "Something went wrong. Please try again.";
 
   return (
     <section className={styles.page}>
@@ -21,7 +26,7 @@ export default function DeckPage() {
         {isError && (
           <TextBlock
             variant="empty"
-            description="Non sono stati trovati risultati per questa pagina, ti invitiamo a riprovare"
+            description={errorMessage}
             className={styles["textBlock--error"]}
           />
         )}
