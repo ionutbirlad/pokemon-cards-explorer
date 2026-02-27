@@ -38,7 +38,7 @@ export default function DeckPage() {
               <button
                 key={pokemon.id}
                 className={styles.grid__item}
-                onClick={() => navigate(`/detail/${pokemon.id}`)}
+                onClick={() => navigate(`/pokemons/${pokemon.id}`)}
               >
                 <PokemonCard
                   variant="compact"
