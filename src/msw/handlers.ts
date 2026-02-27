@@ -9,16 +9,22 @@ export const handlers = [
   // ---- GET /api/items ----
   http.get(`${API_BASE}/items`, async () => {
     // --- Error simulations (uncomment to test) ---
-    // Network error (simulates offline / connection failure)
+    // Network error → GLOBAL
     // return HttpResponse.error();
 
-    // Server error (500)
+    // Server error (500) → GLOBAL
     // return new HttpResponse(null, { status: 500 });
 
-    // Empty list
+    // Unauthorized (401) → LOCAL
+    // return new HttpResponse(null, { status: 401 });
+
+    // Forbidden (403) → LOCAL
+    // return new HttpResponse(null, { status: 403 });
+
+    // Empty list → LOCAL (dato valido, non un errore)
     // return HttpResponse.json([]);
 
-    // Slow response (simulates slow network, ms)
+    // Slow response → non è un errore, testa loading UX
     // await delay(3000);
 
     const items = getPokemonList();
@@ -30,16 +36,25 @@ export const handlers = [
     const id = params.id as string;
 
     // --- Error simulations (uncomment to test) ---
-    // Network error
+    // Network error → GLOBAL
     // return HttpResponse.error();
 
-    // Server error (500)
+    // Server error (500) → GLOBAL
     // return new HttpResponse(null, { status: 500 });
 
-    // Force 404 regardless of id
+    // Not found (404) → LOCAL (redirect a NotFoundPage)
     // return new HttpResponse(null, { status: 404 });
 
-    // Slow response
+    // Unauthorized (401) → LOCAL
+    // return new HttpResponse(null, { status: 401 });
+
+    // Forbidden (403) → LOCAL
+    // return new HttpResponse(null, { status: 403 });
+
+    // Abort (navigazione via prima del completamento) → ignorato, non mostrare nulla
+    // Non simulabile via MSW, avviene naturalmente navigando via durante il fetch
+
+    // Slow response → non è un errore, testa loading UX
     // await delay(3000);
 
     const item = getPokemonById(id);
@@ -55,13 +70,22 @@ export const handlers = [
     const id = params.id as string;
 
     // --- Error simulations (uncomment to test) ---
-    // Network error
+    // Network error → GLOBAL
     // return HttpResponse.error();
 
-    // Server error (500)
+    // Server error (500) → GLOBAL
     // return new HttpResponse(null, { status: 500 });
 
-    // Slow response
+    // Not found (404) → LOCAL (pokemon non esiste)
+    // return new HttpResponse(null, { status: 404 });
+
+    // Unauthorized (401) → LOCAL
+    // return new HttpResponse(null, { status: 401 });
+
+    // Unprocessable (422) → LOCAL (payload non valido)
+    // return new HttpResponse(null, { status: 422 });
+
+    // Slow response → non è un errore, testa loading UX
     // await delay(3000);
 
     const item = getPokemonById(id);
@@ -78,19 +102,25 @@ export const handlers = [
     const jobId = params.job_id as string;
 
     // --- Error simulations (uncomment to test) ---
-    // Network error
+    // Network error → GLOBAL
     // return HttpResponse.error();
 
-    // Server error (500)
+    // Server error (500) → GLOBAL
     // return new HttpResponse(null, { status: 500 });
 
-    // Force job failed
+    // Not found (404) → LOCAL (job non esiste)
+    // return new HttpResponse(null, { status: 404 });
+
+    // Force job failed → LOCAL (esito del combattimento)
     // return HttpResponse.json({ status: "failed", progress: 100, health_points: null });
 
-    // Force job stuck in running
+    // Force job stuck in running → non è un errore, testa polling UX
     // return HttpResponse.json({ status: "running", progress: 50, health_points: null });
 
-    // Slow response (useful to test polling UX)
+    // Force job queued → non è un errore, testa stato iniziale
+    // return HttpResponse.json({ status: "queued", progress: 0, health_points: null });
+
+    // Slow response → non è un errore, testa polling UX
     // await delay(2000);
 
     const job = getJobById(jobId);

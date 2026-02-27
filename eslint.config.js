@@ -72,5 +72,11 @@ export default tseslint.config(
       globals: { ...globals.node },
     },
   },
+  {
+    files: ["src/msw/**"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
   storybook.configs["flat/recommended"],
 );
