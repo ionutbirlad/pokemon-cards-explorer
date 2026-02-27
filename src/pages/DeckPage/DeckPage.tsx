@@ -22,6 +22,7 @@ export default function DeckPage() {
           <TextBlock
             variant="empty"
             description="Non sono stati trovati risultati per questa pagina, ti invitiamo a riprovare"
+            className={styles["textBlock--error"]}
           />
         )}
 
@@ -29,6 +30,7 @@ export default function DeckPage() {
           <TextBlock
             variant="empty"
             description="Non sono stati trovati risultati per questa pagina, ti invitiamo a riprovare"
+            className={styles["textBlock--error"]}
           />
         )}
 
