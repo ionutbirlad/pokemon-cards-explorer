@@ -98,7 +98,6 @@ export default function DetailPage() {
                   </h1>
 
                   {/* Long description — sanitized HTML */}
-                  {/* NOTE: in production with untrusted content, DOMPurify sanitization is required */}
                   <div
                     className={styles.panel__description}
                     dangerouslySetInnerHTML={{
