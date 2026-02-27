@@ -47,13 +47,12 @@ export async function api<T>(path: string, options: ApiOptions = {}): Promise<Ap
 
     if (!res.ok) {
       const { data, message } = await readErrorPayload(res);
-      const fallback = `Request failed (HTTP ${res.status}).`;
 
       return {
         ok: false,
         status: res.status,
         kind: "http" satisfies ApiErrorKind,
-        errorMessage: message ?? fallback,
+        errorMessage: message,
         data,
       };
     }
@@ -77,7 +76,7 @@ export async function api<T>(path: string, options: ApiOptions = {}): Promise<Ap
       ok: false,
       status: 0,
       kind: "network" satisfies ApiErrorKind,
-      errorMessage: isAbort ? "Request aborted." : "Network error. Please try again.",
+      errorMessage: isAbort ? "Request aborted." : undefined,
     };
   }
 }
