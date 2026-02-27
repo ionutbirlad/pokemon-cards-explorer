@@ -97,7 +97,7 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     long_description:
       "<p>Snorlax è una montagna con la modalità risparmio attiva.</p>" +
       "<ul><li>Se lo svegli: non farlo</li><li>Se mangia: sparisce il cibo</li></ul>",
-    typology: { name: "normale", icon_url: "/assets/icons/star.svg", icon_name: "star" },
+    typology: { name: "neutro", icon_url: "/assets/icons/star.svg", icon_name: "star" },
     energy: { name: "sonno", icon_url: "/assets/icons/star.svg" },
     vulnerability: { icon_url: "/assets/icons/equalizer.svg", value: -30 },
     extra_details: "/assets/images/pokemons/snorlax.png",
