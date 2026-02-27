@@ -23,7 +23,7 @@ const now = () => Date.now();
 const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 /**
- * Simple time-based state machine.
+ * Time-based state machine.
  * queued → running → done/failed.
  * Progress grows based on elapsed time.
  */
@@ -61,11 +61,11 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     long_description:
       "<p>Psyduck vive in uno stato di confusione perenne.</p>" +
       "<ul><li>Mal di testa</li><li>Poteri psichici involontari</li></ul>",
-    typology: { name: "acqua", icon_url: "assets/icons/water_drop.svg", icon_name: "water_drop" },
-    energy: { name: "stella", icon_url: "assets/icons/star.svg" },
-    vulnerability: { icon_url: "assets/icons/grass.svg", value: -20 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/psyduck.png",
+    typology: { name: "acqua", icon_url: "/assets/icons/water_drop.svg", icon_name: "water_drop" },
+    energy: { name: "stella", icon_url: "/assets/icons/star.svg" },
+    vulnerability: { icon_url: "/assets/icons/eco.svg", value: -20 },
+    extra_details: "/assets/images/pokemons/psyduck.png",
+    image_url: "/assets/images/pokemons/psyduck.png",
   },
   {
     id: "sprigatito",
@@ -79,11 +79,11 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     long_description:
       "<p>Sprigatito è piccolo ma testardo.</p>" +
       "<ul><li>Adora il sole</li><li>Odora di erba fresca</li></ul>",
-    typology: { name: "erba", icon_url: "assets/icons/leaf.svg", icon_name: "leaf" },
-    energy: { name: "natura", icon_url: "assets/icons/leaf.svg" },
-    vulnerability: { icon_url: "assets/icons/fire.svg", value: -20 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/sprigatito.png",
+    typology: { name: "erba", icon_url: "/assets/icons/eco.svg", icon_name: "eco" },
+    energy: { name: "natura", icon_url: "/assets/icons/eco.svg" },
+    vulnerability: { icon_url: "/assets/icons/local_fire_department.svg", value: -20 },
+    extra_details: "/assets/images/pokemons/sprigatito.png",
+    image_url: "/assets/images/pokemons/sprigatito.png",
   },
   {
     id: "snorlax",
@@ -97,11 +97,11 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     long_description:
       "<p>Snorlax è una montagna con la modalità risparmio attiva.</p>" +
       "<ul><li>Se lo svegli: non farlo</li><li>Se mangia: sparisce il cibo</li></ul>",
-    typology: { name: "normale", icon_url: "assets/icons/normal.svg", icon_name: "normal" },
-    energy: { name: "sonno", icon_url: "assets/icons/moon.svg" },
-    vulnerability: { icon_url: "assets/icons/fighting.svg", value: -30 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/snorlax.png",
+    typology: { name: "normale", icon_url: "/assets/icons/star.svg", icon_name: "star" },
+    energy: { name: "sonno", icon_url: "/assets/icons/star.svg" },
+    vulnerability: { icon_url: "/assets/icons/equalizer.svg", value: -30 },
+    extra_details: "/assets/images/pokemons/snorlax.png",
+    image_url: "/assets/images/pokemons/snorlax.png",
   },
   {
     id: "fuecoco",
@@ -114,12 +114,16 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     short_description: "Coccodrillo pigro con scaglie rosse...",
     long_description:
       "<p>Fuecoco vive tranquillo.</p>" +
-      "<ul><li>Scalda l’ambiente</li><li>Si dimentica cosa stava facendo</li></ul>",
-    typology: { name: "fuoco", icon_url: "assets/icons/fire.svg", icon_name: "fire" },
-    energy: { name: "calore", icon_url: "assets/icons/fire.svg" },
-    vulnerability: { icon_url: "assets/icons/water_drop.svg", value: -20 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/fuecoco.png",
+      "<ul><li>Scalda l'ambiente</li><li>Si dimentica cosa stava facendo</li></ul>",
+    typology: {
+      name: "fuoco",
+      icon_url: "/assets/icons/local_fire_department.svg",
+      icon_name: "local_fire_department",
+    },
+    energy: { name: "calore", icon_url: "/assets/icons/local_fire_department.svg" },
+    vulnerability: { icon_url: "/assets/icons/water_drop.svg", value: -20 },
+    extra_details: "/assets/images/pokemons/fuecoco.png",
+    image_url: "/assets/images/pokemons/fuecoco.png",
   },
   {
     id: "magikarp",
@@ -131,13 +135,13 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     rarity: "pokemon_base",
     short_description: "Universalmente noto come il Pokémon più inutile al mondo.",
     long_description:
-      "<p>Magikarp è qui per ricordarti l’umiltà.</p>" +
+      "<p>Magikarp è qui per ricordarti l'umiltà.</p>" +
       "<ul><li>Fa splash</li><li>Fa ancora splash</li></ul>",
-    typology: { name: "acqua", icon_url: "assets/icons/water_drop.svg", icon_name: "water_drop" },
-    energy: { name: "onda", icon_url: "assets/icons/water_drop.svg" },
-    vulnerability: { icon_url: "assets/icons/electric.svg", value: -30 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/magikarp.png",
+    typology: { name: "acqua", icon_url: "/assets/icons/water_drop.svg", icon_name: "water_drop" },
+    energy: { name: "onda", icon_url: "/assets/icons/water_drop.svg" },
+    vulnerability: { icon_url: "/assets/icons/equalizer.svg", value: -30 },
+    extra_details: "/assets/images/pokemons/magikarp.png",
+    image_url: "/assets/images/pokemons/magikarp.png",
   },
   {
     id: "diglett",
@@ -151,11 +155,11 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     long_description:
       "<p>Diglett è un mistero geologico.</p>" +
       "<ul><li>È sempre a metà</li><li>Il resto è NDA</li></ul>",
-    typology: { name: "terra", icon_url: "assets/icons/ground.svg", icon_name: "ground" },
-    energy: { name: "scavo", icon_url: "assets/icons/ground.svg" },
-    vulnerability: { icon_url: "assets/icons/water_drop.svg", value: -20 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/diglett.png",
+    typology: { name: "terra", icon_url: "/assets/icons/eco.svg", icon_name: "eco" },
+    energy: { name: "scavo", icon_url: "/assets/icons/eco.svg" },
+    vulnerability: { icon_url: "/assets/icons/water_drop.svg", value: -20 },
+    extra_details: "/assets/images/pokemons/diglett.jpg",
+    image_url: "/assets/images/pokemons/diglett.jpg",
   },
 ];
 
