@@ -9,6 +9,9 @@ export const handlers = [
   // ---- GET /api/items ----
   http.get(`${API_BASE}/items`, async () => {
     // --- Error simulations (uncomment to test) ---
+    // Network error → GLOBALE
+    // return HttpResponse.error();
+
     // Server error (500) → GLOBALE
     // return HttpResponse.json({ message: "Internal server error." }, { status: 500 });
 
