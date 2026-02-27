@@ -64,7 +64,7 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     typology: { name: "acqua", icon_url: "/assets/icons/water_drop.svg", icon_name: "water_drop" },
     energy: { name: "stella", icon_url: "/assets/icons/star.svg" },
     vulnerability: { icon_url: "/assets/icons/eco.svg", value: -20 },
-    extra_details: "/assets/images/pokemons/psyduck.png",
+    extra_details: "/assets/images/general/extra_details_psyduck.png",
     image_url: "/assets/images/pokemons/psyduck.png",
   },
   {
@@ -82,7 +82,7 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     typology: { name: "erba", icon_url: "/assets/icons/eco.svg", icon_name: "eco" },
     energy: { name: "natura", icon_url: "/assets/icons/eco.svg" },
     vulnerability: { icon_url: "/assets/icons/local_fire_department.svg", value: -20 },
-    extra_details: "/assets/images/pokemons/sprigatito.png",
+    extra_details: "/assets/images/general/extra_details_sprigatito.png",
     image_url: "/assets/images/pokemons/sprigatito.png",
   },
   {
@@ -100,7 +100,7 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     typology: { name: "neutro", icon_url: "/assets/icons/star.svg", icon_name: "star" },
     energy: { name: "sonno", icon_url: "/assets/icons/star.svg" },
     vulnerability: { icon_url: "/assets/icons/equalizer.svg", value: -30 },
-    extra_details: "/assets/images/pokemons/snorlax.png",
+    extra_details: "/assets/images/general/extra_details_snorlax.png",
     image_url: "/assets/images/pokemons/snorlax.png",
   },
   {
@@ -122,7 +122,7 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     },
     energy: { name: "calore", icon_url: "/assets/icons/local_fire_department.svg" },
     vulnerability: { icon_url: "/assets/icons/water_drop.svg", value: -20 },
-    extra_details: "/assets/images/pokemons/fuecoco.png",
+    extra_details: "/assets/images/general/extra_details_fuecoco.png",
     image_url: "/assets/images/pokemons/fuecoco.png",
   },
   {
@@ -140,7 +140,7 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     typology: { name: "acqua", icon_url: "/assets/icons/water_drop.svg", icon_name: "water_drop" },
     energy: { name: "onda", icon_url: "/assets/icons/water_drop.svg" },
     vulnerability: { icon_url: "/assets/icons/equalizer.svg", value: -30 },
-    extra_details: "/assets/images/pokemons/magikarp.png",
+    extra_details: "/assets/images/general/extra_details_psyduck.png",
     image_url: "/assets/images/pokemons/magikarp.png",
   },
   {
@@ -158,7 +158,7 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     typology: { name: "terra", icon_url: "/assets/icons/eco.svg", icon_name: "eco" },
     energy: { name: "scavo", icon_url: "/assets/icons/eco.svg" },
     vulnerability: { icon_url: "/assets/icons/water_drop.svg", value: -20 },
-    extra_details: "/assets/images/pokemons/diglett.jpg",
+    extra_details: "/assets/images/general/extra_details_psyduck.png",
     image_url: "/assets/images/pokemons/diglett.jpg",
   },
 ];

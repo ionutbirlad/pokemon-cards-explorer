@@ -7,7 +7,6 @@ import EqualizerIcon from "@/assets/icons/equalizer.svg?react";
 import HeartIcon from "@/assets/icons/favorite.svg?react";
 import SkullOutlineIcon from "@/assets/icons/skull_outline.svg?react";
 import StarIcon from "@/assets/icons/star.svg?react";
-import extraDetails from "@/assets/images/general/extra_details.png";
 import LoadingOverlay from "@/components/LoadingOverlay/LoadingOverlay";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import Button from "@/components/ui/Button/Button";
@@ -134,7 +133,11 @@ export default function DetailPage() {
           {/* Related — placeholder image until endpoint is implemented */}
           {pokemon && (
             <div className={styles.related}>
-              <img src={extraDetails} alt="Extra details" className={styles.related__image} />
+              <img
+                src={pokemon.extraDetails}
+                alt="Extra details"
+                className={styles.related__image}
+              />
             </div>
           )}
         </div>
