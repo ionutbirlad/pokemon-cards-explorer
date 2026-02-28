@@ -75,71 +75,73 @@ export default function DetailPage() {
       <div className="container">
         <div className={styles.panel}>
           <div className={styles.panel__inner}>
-            {/* Left column — text content */}
-            <div className={styles.panel__content}>
-              <button className={styles.panel__back} onClick={() => navigate(-1)}>
-                <ArrowBackIcon />
-              </button>
+            <div className={styles.panel__top}>
+              {/* Left column — text content */}
+              <div className={styles.panel__content}>
+                <button className={styles.panel__back} onClick={() => navigate(-1)}>
+                  <ArrowBackIcon />
+                </button>
 
-              {isLocalError && (
-                <TextBlock
-                  variant="empty"
-                  description={errorMessage}
-                  className={styles["textBlock--error"]}
-                />
-              )}
-
-              {pokemon && (
-                <>
-                  <h2 className={styles.panel__title}>
-                    {pokemon.name}
-                    <span className={styles.panel__subtitle}> | {pokemon.subtitle}</span>
-                  </h2>
-
-                  {/* Long description — sanitized HTML */}
-                  <div
-                    className={styles.panel__description}
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(pokemon.longDescription),
-                    }}
+                {isLocalError && (
+                  <TextBlock
+                    variant="empty"
+                    description={errorMessage}
+                    className={styles["textBlock--error"]}
                   />
-                </>
+                )}
+
+                {pokemon && (
+                  <>
+                    <h2 className={styles.panel__title}>
+                      {pokemon.name}
+                      <span className={styles.panel__subtitle}> | {pokemon.subtitle}</span>
+                    </h2>
+
+                    {/* Long description — sanitized HTML */}
+                    <div
+                      className={styles.panel__description}
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(pokemon.longDescription),
+                      }}
+                    />
+                  </>
+                )}
+              </div>
+
+              {/* Right column — card + CTA */}
+              {pokemon && (
+                <div className={styles.panel__card}>
+                  <PokemonCard
+                    variant="full"
+                    number={pokemon.cardNumber}
+                    name={pokemon.name}
+                    description={pokemon.shortDescription}
+                    imageSrc={pokemon.imageUrl}
+                    typologyName={pokemon.typology.name}
+                    typologyIcon={typologyIcon}
+                    footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
+                    footerIcons={[typologyIcon, <StarIcon />]}
+                    items={widgetItems}
+                    status={cardStatus}
+                  />
+                  <Button onClick={() => {}} status="active">
+                    SIMULA COMBATTIMENTO
+                  </Button>
+                </div>
               )}
             </div>
 
-            {/* Right column — card + CTA */}
+            {/* Related — placeholder image until endpoint is implemented */}
             {pokemon && (
-              <div className={styles.panel__card}>
-                <PokemonCard
-                  variant="full"
-                  number={pokemon.cardNumber}
-                  name={pokemon.name}
-                  description={pokemon.shortDescription}
-                  imageSrc={pokemon.imageUrl}
-                  typologyName={pokemon.typology.name}
-                  typologyIcon={typologyIcon}
-                  footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
-                  footerIcons={[typologyIcon, <StarIcon />]}
-                  items={widgetItems}
-                  status={cardStatus}
+              <div className={styles.panel__bottom}>
+                <img
+                  src={pokemon.extraDetails}
+                  alt="Extra details"
+                  className={styles["panel__bottom-image"]}
                 />
-                <Button onClick={() => {}} status="active">
-                  SIMULA COMBATTIMENTO
-                </Button>
               </div>
             )}
           </div>
-
-          {/* Related — placeholder image until endpoint is implemented */}
-          {pokemon && (
-            <div className={styles.related}>
-              <img
-                src={pokemon.extraDetails}
-                alt="Extra details"
-                className={styles.related__image}
-              />
-            </div>
-          )}
         </div>
       </div>
     </div>
