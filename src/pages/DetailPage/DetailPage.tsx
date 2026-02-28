@@ -65,7 +65,7 @@ export default function DetailPage() {
     : [];
 
   return (
-    <div className={styles.page}>
+    <section className={styles.page}>
       {/* Hero banner */}
       {pokemon && (
         <div className={styles.hero} style={{ backgroundImage: `url(${pokemon.imageUrl})` }} />
@@ -150,6 +150,6 @@ export default function DetailPage() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
