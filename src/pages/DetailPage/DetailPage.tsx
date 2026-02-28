@@ -131,7 +131,7 @@ export default function DetailPage() {
                     status={cardStatus}
                   />
                   <div>
-                    <Button onClick={() => {}} withIcon={false} status="active">
+                    <Button onClick={() => {}} status="active">
                       SIMULA COMBATTIMENTO
                     </Button>
                   </div>
