@@ -11,9 +11,7 @@ export default function RootLayout() {
       <AppHeader />
 
       <main className={styles.main}>
-        <div className="container">
-          <Outlet />
-        </div>
+        <Outlet />
       </main>
 
       <AppFooter />

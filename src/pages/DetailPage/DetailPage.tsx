@@ -72,8 +72,8 @@ export default function DetailPage() {
       )}
 
       {/* Main content panel */}
-      <div className={styles.panel}>
-        <div className="container">
+      <div className="container">
+        <div className={styles.panel}>
           <div className={styles.panel__inner}>
             {/* Left column — text content */}
             <div className={styles.panel__content}>
