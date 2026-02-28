@@ -9,23 +9,25 @@
 
 .hero {
   width: 100%;
-  height: 200px;
+  height: 300px;
   background-size: cover;
-  background-position: center top;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 // ---- Panel ----
 
 .panel {
   background-color: var(--color-surface-1);
-  border-radius: var(--radius-main) var(--radius-main) 0 0;
-  margin-top: calc(var(--size-2xl) * -1);
-  padding-block: var(--size-2xl);
+  border-radius: var(--radius-main);
+  margin-top: calc(var(--size-4xl) * -1);
+  margin-bottom: calc(var(--size-2xl));
 
   &__inner {
     display: flex;
     flex-direction: column;
     gap: var(--size-2xl);
+    padding: var(--size-3xl) var(--size-4xl);
 
     @media (min-width: 768px) {
       flex-direction: row;
@@ -112,6 +114,7 @@
 
 .related {
   margin-top: var(--size-2xl);
+  padding: var(--size-3xl) var(--size-4xl);
 
   &__image {
     width: 100%;
