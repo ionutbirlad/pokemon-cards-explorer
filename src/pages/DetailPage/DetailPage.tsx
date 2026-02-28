@@ -116,19 +116,21 @@ export default function DetailPage() {
               {/* Right column — card + CTA */}
               {pokemon && (
                 <div className={styles["panel__top-right"]}>
-                  <PokemonCard
-                    variant="full"
-                    number={pokemon.cardNumber}
-                    name={pokemon.name}
-                    description={pokemon.shortDescription}
-                    imageSrc={pokemon.imageUrl}
-                    typologyName={pokemon.typology.name}
-                    typologyIcon={typologyIcon}
-                    footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
-                    footerIcons={[typologyIcon, <StarIcon />]}
-                    items={widgetItems}
-                    status={cardStatus}
-                  />
+                  <div className={styles["panel__top-right-pokemon-card"]}>
+                    <PokemonCard
+                      variant="full"
+                      number={pokemon.cardNumber}
+                      name={pokemon.name}
+                      description={pokemon.shortDescription}
+                      imageSrc={pokemon.imageUrl}
+                      typologyName={pokemon.typology.name}
+                      typologyIcon={typologyIcon}
+                      footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
+                      footerIcons={[typologyIcon, <StarIcon />]}
+                      items={widgetItems}
+                      status={cardStatus}
+                    />
+                  </div>
                   <div>
                     <Button onClick={() => {}} status="active">
                       SIMULA COMBATTIMENTO
