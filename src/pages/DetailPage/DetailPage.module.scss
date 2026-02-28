@@ -37,79 +37,79 @@
       align-items: flex-start;
       gap: var(--size-3xl);
     }
-  }
 
-  &__content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--size-xl);
-    flex: 1;
-  }
+    &-left {
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-xl);
+      flex: 1;
 
-  &__back {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: var(--radius-infinite);
-    background-color: var(--color-on-surface-1);
-    color: var(--color-surface-1);
-    cursor: pointer;
+      &-back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-infinite);
+        background-color: var(--color-on-surface-1);
+        color: var(--color-surface-1);
+        cursor: pointer;
 
-    svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-    }
-  }
+        svg {
+          width: 20px;
+          height: 20px;
+          fill: currentColor;
+        }
+      }
 
-  &__title {
-    @include t.heading-2;
-    color: var(--color-on-surface-1);
-  }
+      &-title {
+        @include t.heading-2;
+        color: var(--color-on-surface-1);
 
-  &__subtitle {
-    color: var(--color-surface-1-contrast);
-  }
+        &--muted {
+          color: var(--color-surface-1-contrast);
+        }
+      }
 
-  // this container styles all tags that arrive from the backend under "long_description"
-  &__description {
-    @include t.paragraph-1;
-    color: var(--color-on-surface-1);
+      // this container styles all tags that arrive from the backend under "long_description"
+      &-description {
+        @include t.paragraph-1;
+        color: var(--color-on-surface-1);
 
-    p {
-      margin-bottom: var(--size-l);
+        p {
+          margin-bottom: var(--size-l);
 
-      &:last-child {
-        margin-bottom: 0;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        ul {
+          list-style: disc;
+          padding-left: var(--size-xl);
+          margin-bottom: var(--size-l);
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        li {
+          margin-bottom: var(--size-s);
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
       }
     }
 
-    ul {
-      list-style: disc;
-      padding-left: var(--size-xl);
-      margin-bottom: var(--size-l);
-
-      &:last-child {
-        margin-bottom: 0;
-      }
+    &-right {
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-l);
+      flex-shrink: 0;
     }
-
-    li {
-      margin-bottom: var(--size-s);
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-  }
-
-  &__card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--size-l);
-    flex-shrink: 0;
   }
 
   // ---- Panel bottom ----

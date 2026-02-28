@@ -77,8 +77,11 @@ export default function DetailPage() {
           <div className={styles.panel__inner}>
             <div className={styles.panel__top}>
               {/* Left column — text content */}
-              <div className={styles.panel__content}>
-                <button className={styles.panel__back} onClick={() => navigate(-1)}>
+              <div className={styles["panel__top-left"]}>
+                <button
+                  className={styles["panel__top-left-back-button"]}
+                  onClick={() => navigate(-1)}
+                >
                   <ArrowBackIcon />
                 </button>
 
@@ -92,14 +95,17 @@ export default function DetailPage() {
 
                 {pokemon && (
                   <>
-                    <h2 className={styles.panel__title}>
+                    <h2 className={styles["panel__top-left-title"]}>
                       {pokemon.name}
-                      <span className={styles.panel__subtitle}> | {pokemon.subtitle}</span>
+                      <span className={styles["panel__top-left-title--muted"]}>
+                        {" "}
+                        | {pokemon.subtitle}
+                      </span>
                     </h2>
 
                     {/* Long description — sanitized HTML */}
                     <div
-                      className={styles.panel__description}
+                      className={styles["panel__top-left-description"]}
                       dangerouslySetInnerHTML={{
                         __html: DOMPurify.sanitize(pokemon.longDescription),
                       }}
@@ -110,7 +116,7 @@ export default function DetailPage() {
 
               {/* Right column — card + CTA */}
               {pokemon && (
-                <div className={styles.panel__card}>
+                <div className={styles["panel__top-right"]}>
                   <PokemonCard
                     variant="full"
                     number={pokemon.cardNumber}
