@@ -62,18 +62,17 @@
   }
 
   &__title {
-    @include t.heading-1;
+    @include t.heading-2;
     color: var(--color-on-surface-1);
   }
 
   &__subtitle {
-    @include t.heading-3;
-    color: var(--color-on-surface-1-contrast);
-    font-weight: 400;
+    color: var(--color-surface-1-contrast);
   }
 
+  // this container styles all tags that arrive from the backend under "long_description"
   &__description {
-    @include t.paragraph-2;
+    @include t.paragraph-1;
     color: var(--color-on-surface-1);
 
     p {
@@ -85,6 +84,7 @@
     }
 
     ul {
+      list-style: disc;
       padding-left: var(--size-xl);
       margin-bottom: var(--size-l);
 

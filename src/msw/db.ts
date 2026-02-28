@@ -58,9 +58,7 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     health_points: 100,
     rarity: "pokemon_base",
     short_description: "Usare i suoi poteri gli causa mal di testa...",
-    long_description:
-      "<p>Psyduck vive in uno stato di confusione perenne.</p>" +
-      "<ul><li>Mal di testa</li><li>Poteri psichici involontari</li></ul>",
+    long_description: `<p>Psyduck vive in uno stato di confusione perenne. Praticamente è il simbolo universale del "non ho capito la domanda".</p><ul><li>Il suo superpotere? L'emicrania. Più gli scoppia la testa, più diventa un dio dei poteri psichici.</li><li>Il dramma: Appena finisce di lanciare attacchi devastanti, si dimentica tutto e torna a fissare il vuoto come se non fosse successo nulla.</li></ul><p>In breve: vive con le mani sulle tempie, non sa dove si trova, ma se lo fai arrabbiare ti sposta le montagne con il pensiero. Un eroe moderno.</p>`,
     typology: { name: "acqua", icon_url: "/assets/icons/water_drop.svg", icon_name: "water_drop" },
     energy: { name: "stella", icon_url: "/assets/icons/star.svg" },
     vulnerability: { icon_url: "/assets/icons/eco.svg", value: -20 },
