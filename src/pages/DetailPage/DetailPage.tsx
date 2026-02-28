@@ -130,9 +130,11 @@ export default function DetailPage() {
                     items={widgetItems}
                     status={cardStatus}
                   />
-                  <Button onClick={() => {}} status="active">
-                    SIMULA COMBATTIMENTO
-                  </Button>
+                  <div>
+                    <Button onClick={() => {}} withIcon={false} status="active">
+                      SIMULA COMBATTIMENTO
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>

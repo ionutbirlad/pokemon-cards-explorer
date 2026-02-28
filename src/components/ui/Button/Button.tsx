@@ -9,10 +9,16 @@ type ButtonStatus = "active" | "disabled";
 type ButtonProps = {
   children: ReactNode;
   status?: ButtonStatus;
+  withIcon?: boolean;
   onClick?: () => void;
 };
 
-export default function Button({ children, status = "active", onClick }: ButtonProps) {
+export default function Button({
+  children,
+  status = "active",
+  withIcon = true,
+  onClick,
+}: ButtonProps) {
   const isDisabled = status === "disabled";
 
   return (
@@ -21,7 +27,7 @@ export default function Button({ children, status = "active", onClick }: ButtonP
       disabled={isDisabled}
       onClick={onClick}
     >
-      <StarIcon className={styles.button__icon} />
+      {withIcon && <StarIcon className={styles.button__icon} />}
       <span className={styles.button__label}>{children}</span>
     </button>
   );
