@@ -7,9 +7,9 @@
   justify-content: center;
   padding-block: var(--size-xl);
   background-color: var(--color-on-surface-2-contrast-dark);
-}
 
-.footer__text {
-  @include t.paragraph-3;
-  color: var(--color-on-surface-2);
+  &__text {
+    @include t.paragraph-3;
+    color: var(--color-on-surface-2);
+  }
 }
