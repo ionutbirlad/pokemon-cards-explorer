@@ -131,11 +131,13 @@ export default function DetailPage() {
                       status={cardStatus}
                     />
                   </div>
-                  <div>
-                    <Button onClick={() => {}} status="active">
-                      SIMULA COMBATTIMENTO
-                    </Button>
-                  </div>
+                  <Button
+                    className={styles["panel__top-right-fight-button"]}
+                    onClick={() => {}}
+                    status="active"
+                  >
+                    SIMULA COMBATTIMENTO
+                  </Button>
                 </div>
               )}
             </div>

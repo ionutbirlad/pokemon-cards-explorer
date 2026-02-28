@@ -7,15 +7,16 @@ type ButtonStatus = "active" | "disabled";
 type ButtonProps = {
   children: ReactNode;
   status?: ButtonStatus;
+  className?: string;
   onClick?: () => void;
 };
 
-export default function Button({ children, status = "active", onClick }: ButtonProps) {
+export default function Button({ children, status = "active", className, onClick }: ButtonProps) {
   const isDisabled = status === "disabled";
 
   return (
     <button
-      className={`${styles.button} ${styles[`button--${status}`]}`}
+      className={`${styles.button} ${styles[`button--${status}`]} ${className ?? ""}`}
       disabled={isDisabled}
       onClick={onClick}
     >

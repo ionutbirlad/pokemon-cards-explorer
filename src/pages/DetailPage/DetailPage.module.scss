@@ -115,6 +115,14 @@
       &-pokemon-card {
         max-width: 260px;
       }
+
+      &-fight-button {
+        @include t.label-2;
+
+        @media (min-width: 768px) {
+          @include t.label-1;
+        }
+      }
     }
   }
 
