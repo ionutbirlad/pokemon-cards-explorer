@@ -91,10 +91,10 @@ export default function DetailPage() {
 
               {pokemon && (
                 <>
-                  <h1 className={styles.panel__title}>
+                  <h2 className={styles.panel__title}>
                     {pokemon.name}
                     <span className={styles.panel__subtitle}> | {pokemon.subtitle}</span>
-                  </h1>
+                  </h2>
 
                   {/* Long description — sanitized HTML */}
                   <div
