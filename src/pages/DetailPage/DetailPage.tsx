@@ -78,12 +78,11 @@ export default function DetailPage() {
             <div className={styles.panel__top}>
               {/* Left column — text content */}
               <div className={styles["panel__top-left"]}>
-                <button
-                  className={styles["panel__top-left-back-button"]}
-                  onClick={() => navigate(-1)}
-                >
-                  <ArrowBackIcon />
-                </button>
+                <div>
+                  <Button onClick={() => navigate(-1)} status="active">
+                    <ArrowBackIcon />
+                  </Button>
+                </div>
 
                 {isLocalError && (
                   <TextBlock

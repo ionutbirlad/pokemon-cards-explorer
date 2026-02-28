@@ -45,24 +45,6 @@
       gap: var(--size-3xl);
       flex: 1;
 
-      &-back-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        border-radius: var(--radius-infinite);
-        background-color: var(--color-on-surface-1);
-        color: var(--color-surface-1);
-        cursor: pointer;
-
-        svg {
-          width: 20px;
-          height: 20px;
-          fill: currentColor;
-        }
-      }
-
       &-title {
         @include t.heading-2;
         color: var(--color-on-surface-1);
