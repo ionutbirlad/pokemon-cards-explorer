@@ -10,12 +10,20 @@ export default function NotFoundPage() {
 
   return (
     <section className={styles.page}>
-      <img src={notFoundImage} alt="404 - Pagina non trovata" className={styles.image} />
-      <h2 className={styles.title}>Ooops!</h2>
-      <p className={styles.description}>Sembra che ci sia stato un problema, torna all'hompage.</p>
-      <Button onClick={() => navigate("/")} status="active">
-        VAI ALLA HOME
-      </Button>
+      <div className={styles["not-found-page"]}>
+        <img
+          src={notFoundImage}
+          alt="404 - Pagina non trovata"
+          className={styles["not-found-page__image"]}
+        />
+        <h2 className={styles["not-found-page__title"]}>Ooops!</h2>
+        <p className={styles["not-found-page__description"]}>
+          Sembra che ci sia stato un problema, torna all'hompage.
+        </p>
+        <Button onClick={() => navigate("/")} status="active">
+          VAI ALLA HOME
+        </Button>
+      </div>
     </section>
   );
 }
