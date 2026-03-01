@@ -67,8 +67,12 @@
 
       // this container styles all tags that arrive from the backend under "long_description"
       &-description {
-        @include t.paragraph-1;
+        @include t.paragraph-2;
         color: var(--color-on-surface-1);
+
+        @media (min-width: 768px) {
+          @include t.paragraph-1;
+        }
 
         p {
           margin-bottom: var(--size-l);
