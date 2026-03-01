@@ -23,7 +23,7 @@ const now = () => Date.now();
 const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 /**
- * Simple time-based state machine.
+ * Time-based state machine.
  * queued → running → done/failed.
  * Progress grows based on elapsed time.
  */
@@ -58,14 +58,12 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     health_points: 100,
     rarity: "pokemon_base",
     short_description: "Usare i suoi poteri gli causa mal di testa...",
-    long_description:
-      "<p>Psyduck vive in uno stato di confusione perenne.</p>" +
-      "<ul><li>Mal di testa</li><li>Poteri psichici involontari</li></ul>",
-    typology: { name: "acqua", icon_url: "assets/icons/water_drop.svg", icon_name: "water_drop" },
-    energy: { name: "stella", icon_url: "assets/icons/star.svg" },
-    vulnerability: { icon_url: "assets/icons/grass.svg", value: -20 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/psyduck.png",
+    long_description: `<p>Psyduck vive in uno stato di confusione perenne. Praticamente è il simbolo universale del "non ho capito la domanda".</p><ul><li>Il suo superpotere? L'emicrania. Più gli scoppia la testa, più diventa un dio dei poteri psichici.</li><li>Il dramma: Appena finisce di lanciare attacchi devastanti, si dimentica tutto e torna a fissare il vuoto come se non fosse successo nulla.</li></ul><p>In breve: vive con le mani sulle tempie, non sa dove si trova, ma se lo fai arrabbiare ti sposta le montagne con il pensiero. Un eroe moderno.</p>`,
+    typology: { name: "acqua", icon_url: "/assets/icons/water_drop.svg", icon_name: "water_drop" },
+    energy: { name: "stella", icon_url: "/assets/icons/star.svg" },
+    vulnerability: { icon_url: "/assets/icons/eco.svg", value: -20 },
+    extra_details: "/assets/images/general/extra_details_psyduck.png",
+    image_url: "/assets/images/pokemons/psyduck.png",
   },
   {
     id: "sprigatito",
@@ -76,14 +74,12 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     health_points: 80,
     rarity: "pokemon_base",
     short_description: "Sprigatito è un germoglio con le fusa...",
-    long_description:
-      "<p>Sprigatito è piccolo ma testardo.</p>" +
-      "<ul><li>Adora il sole</li><li>Odora di erba fresca</li></ul>",
-    typology: { name: "erba", icon_url: "assets/icons/leaf.svg", icon_name: "leaf" },
-    energy: { name: "natura", icon_url: "assets/icons/leaf.svg" },
-    vulnerability: { icon_url: "assets/icons/fire.svg", value: -20 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/sprigatito.png",
+    long_description: `<p>Sprigatito vive per un solo scopo: essere adorato.</p><ul><li>Il suo superpotere? L'aromaterapia forzata. Praticamente ti sconfigge a colpi di profumatore per ambienti.</li><li>Il dramma: Se smetti di accarezzarlo anche solo per un secondo, entra in modalità "offesa profonda".</li></ul><p>In breve: è una piantina adorabile con crisi di protagonismo. Ti guarda con quegli occhioni dolci, ma dentro sta solo pensando a come farti diventare il suo cameriere personale. Un piccolo tiranno verde.</p>`,
+    typology: { name: "erba", icon_url: "/assets/icons/eco.svg", icon_name: "eco" },
+    energy: { name: "natura", icon_url: "/assets/icons/eco.svg" },
+    vulnerability: { icon_url: "/assets/icons/local_fire_department.svg", value: -20 },
+    extra_details: "/assets/images/general/extra_details_sprigatito.png",
+    image_url: "/assets/images/pokemons/sprigatito.png",
   },
   {
     id: "snorlax",
@@ -94,14 +90,12 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     health_points: 60,
     rarity: "pokemon_base",
     short_description: "Dorme tutto il giorno e si sveglia solo per mangiare.",
-    long_description:
-      "<p>Snorlax è una montagna con la modalità risparmio attiva.</p>" +
-      "<ul><li>Se lo svegli: non farlo</li><li>Se mangia: sparisce il cibo</li></ul>",
-    typology: { name: "normale", icon_url: "assets/icons/normal.svg", icon_name: "normal" },
-    energy: { name: "sonno", icon_url: "assets/icons/moon.svg" },
-    vulnerability: { icon_url: "assets/icons/fighting.svg", value: -30 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/snorlax.png",
+    long_description: `<p>Il suo superpotere? Lo stomaco. Può mangiare quintali di cibo (anche avariato) e digerire tutto senza fare una piega. È una specie di buco nero con la pelliccia.</p><p>Il dramma: Non si sveglia per nulla al mondo. Puoi saltargli sulla pancia o suonargli un'orchestra nelle orecchie, ma se non tiri fuori un Flauto Pokémon, lui resta lì a bloccare la strada a tutti.</p><p>In breve: mangia, dorme, occupa tutto il marciapiede e non paga l'affitto. Fondamentalmente, vive la vita che tutti vorremmo avere il lunedì mattina. Un mito assoluto.</p>`,
+    typology: { name: "neutro", icon_url: "/assets/icons/star.svg", icon_name: "star" },
+    energy: { name: "sonno", icon_url: "/assets/icons/star.svg" },
+    vulnerability: { icon_url: "/assets/icons/equalizer.svg", value: -30 },
+    extra_details: "/assets/images/general/extra_details_snorlax.png",
+    image_url: "/assets/images/pokemons/snorlax.png",
   },
   {
     id: "fuecoco",
@@ -112,14 +106,16 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     health_points: 40,
     rarity: "pokemon_base",
     short_description: "Coccodrillo pigro con scaglie rosse...",
-    long_description:
-      "<p>Fuecoco vive tranquillo.</p>" +
-      "<ul><li>Scalda l’ambiente</li><li>Si dimentica cosa stava facendo</li></ul>",
-    typology: { name: "fuoco", icon_url: "assets/icons/fire.svg", icon_name: "fire" },
-    energy: { name: "calore", icon_url: "assets/icons/fire.svg" },
-    vulnerability: { icon_url: "assets/icons/water_drop.svg", value: -20 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/fuecoco.png",
+    long_description: `<p>Fuecoco vive in uno stato di beatitudine totale, principalmente perché nel suo cervello non sta succedendo assolutamente nulla.</p><ul><li>Il suo superpotere? La fotosintesi... ma al contrario. Sta fermo a scaldarsi al sole finché non diventa un termosifone vivente.</li><li>Il dramma: Ha la soglia di attenzione di un sasso. Se vede del cibo, dimentica istantaneamente chi sei, dove si trova e perché stava combattendo.</li></ul><p>In breve: è adorabile, calmo e terribilmente lento a capire le battute. Un coraggioso eroe pigro.</p>`,
+    typology: {
+      name: "fuoco",
+      icon_url: "/assets/icons/local_fire_department.svg",
+      icon_name: "local_fire_department",
+    },
+    energy: { name: "calore", icon_url: "/assets/icons/local_fire_department.svg" },
+    vulnerability: { icon_url: "/assets/icons/water_drop.svg", value: -20 },
+    extra_details: "/assets/images/general/extra_details_fuecoco.png",
+    image_url: "/assets/images/pokemons/fuecoco.png",
   },
   {
     id: "magikarp",
@@ -131,13 +127,13 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     rarity: "pokemon_base",
     short_description: "Universalmente noto come il Pokémon più inutile al mondo.",
     long_description:
-      "<p>Magikarp è qui per ricordarti l’umiltà.</p>" +
+      "<p>Magikarp è qui per ricordarti l'umiltà.</p>" +
       "<ul><li>Fa splash</li><li>Fa ancora splash</li></ul>",
-    typology: { name: "acqua", icon_url: "assets/icons/water_drop.svg", icon_name: "water_drop" },
-    energy: { name: "onda", icon_url: "assets/icons/water_drop.svg" },
-    vulnerability: { icon_url: "assets/icons/electric.svg", value: -30 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/magikarp.png",
+    typology: { name: "acqua", icon_url: "/assets/icons/water_drop.svg", icon_name: "water_drop" },
+    energy: { name: "onda", icon_url: "/assets/icons/water_drop.svg" },
+    vulnerability: { icon_url: "/assets/icons/equalizer.svg", value: -30 },
+    extra_details: "/assets/images/general/extra_details_psyduck.png",
+    image_url: "/assets/images/pokemons/magikarp.png",
   },
   {
     id: "diglett",
@@ -151,11 +147,11 @@ const pokemonsSeed: RemotePokemonDetail[] = [
     long_description:
       "<p>Diglett è un mistero geologico.</p>" +
       "<ul><li>È sempre a metà</li><li>Il resto è NDA</li></ul>",
-    typology: { name: "terra", icon_url: "assets/icons/ground.svg", icon_name: "ground" },
-    energy: { name: "scavo", icon_url: "assets/icons/ground.svg" },
-    vulnerability: { icon_url: "assets/icons/water_drop.svg", value: -20 },
-    extra_details: "assets/images/extra_details.png",
-    image_url: "assets/images/diglett.png",
+    typology: { name: "terra", icon_url: "/assets/icons/eco.svg", icon_name: "eco" },
+    energy: { name: "scavo", icon_url: "/assets/icons/eco.svg" },
+    vulnerability: { icon_url: "/assets/icons/water_drop.svg", value: -20 },
+    extra_details: "/assets/images/general/extra_details_psyduck.png",
+    image_url: "/assets/images/pokemons/diglett.jpg",
   },
 ];
 

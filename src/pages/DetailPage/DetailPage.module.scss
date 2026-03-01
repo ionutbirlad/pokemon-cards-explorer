@@ -1,3 +1,153 @@
+@use "@/styles/tokens/typography" as t;
+
 .page {
-  padding-block: var(--size-2xl);
+  display: flex;
+  flex-direction: column;
+}
+
+// ---- Hero ----
+
+.hero {
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+// ---- Panel ----
+
+.panel {
+  background-color: var(--color-surface-1);
+  border-radius: var(--radius-double);
+  margin-top: calc(var(--size-4xl) * -1);
+  margin-bottom: calc(var(--size-2xl));
+
+  // ---- Panel top ----
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-2xl);
+    padding: var(--size-2xl) var(--size-3xl);
+    border-bottom: 2px solid var(--color-on-surface-1-contrast-dark);
+
+    @media (min-width: 768px) {
+      padding: var(--size-3xl) var(--size-4xl);
+    }
+
+    @media (min-width: 1024px) {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: var(--size-4xl);
+    }
+
+    &-left {
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-2xl);
+      flex: 1;
+
+      @media (min-width: 768px) {
+        gap: var(--size-3xl);
+      }
+
+      @media (min-width: 1024px) {
+        width: 50%;
+      }
+
+      &-title {
+        @include t.heading-2;
+        color: var(--color-on-surface-1);
+
+        &--muted {
+          color: var(--color-surface-1-contrast);
+        }
+      }
+
+      // this container styles all tags that arrive from the backend under "long_description"
+      &-description {
+        @include t.paragraph-2;
+        color: var(--color-on-surface-1);
+
+        @media (min-width: 768px) {
+          @include t.paragraph-1;
+        }
+
+        p {
+          margin-bottom: var(--size-l);
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        ul {
+          list-style: disc;
+          padding-left: var(--size-xl);
+          margin-bottom: var(--size-l);
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        li {
+          margin-bottom: var(--size-s);
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    &-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--size-2xl);
+      flex-shrink: 0;
+      padding: var(--size-3xl) var(--size-4xl);
+      border-radius: var(--radius-main);
+      background-color: var(--color-surface-2);
+
+      @media (min-width: 1024px) {
+        width: 50%;
+      }
+
+      &-pokemon-card {
+        max-width: 260px;
+      }
+
+      &-fight-button {
+        @include t.label-2;
+
+        @media (min-width: 768px) {
+          @include t.label-1;
+        }
+      }
+    }
+  }
+
+  // ---- Panel bottom ----
+
+  &__bottom {
+    padding: var(--size-2xl) var(--size-3xl);
+
+    @media (min-width: 768px) {
+      padding: var(--size-3xl) var(--size-4xl);
+    }
+
+    &-image {
+      width: 100%;
+      border-radius: var(--radius-main);
+    }
+  }
+}
+
+// ---- Error ----
+
+.textBlock--error {
+  margin-top: var(--size-l);
 }
