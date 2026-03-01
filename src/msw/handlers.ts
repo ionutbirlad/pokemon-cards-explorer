@@ -1,4 +1,4 @@
-import { delay, http, HttpResponse } from "msw";
+import { delay as _delay, http, HttpResponse } from "msw";
 
 import { createJobForItem, getJobById, getPokemonById, getPokemonList } from "./db";
 
@@ -28,7 +28,7 @@ export const handlers = [
     // return HttpResponse.json({ message: "Invalid request payload." }, { status: 422 });
 
     // Slow response → non è un errore, testa loading UX
-    // await delay(3000);
+    // await _delay(3000);
 
     const items = getPokemonList();
     return HttpResponse.json(items);
@@ -58,7 +58,7 @@ export const handlers = [
     // Non simulabile via MSW, avviene naturalmente navigando via durante il fetch
 
     // Slow response → non è un errore, testa loading UX
-    // await delay(3000);
+    // await _delay(3000);
 
     const item = getPokemonById(id);
     if (!item) {
@@ -89,7 +89,7 @@ export const handlers = [
     // return new HttpResponse(null, { status: 422 });
 
     // Slow response → non è un errore, testa loading UX
-    // await delay(3000);
+    // await _delay(3000);
 
     const item = getPokemonById(id);
     if (!item) {
@@ -124,7 +124,7 @@ export const handlers = [
     // return HttpResponse.json({ status: "queued", progress: 0, health_points: null });
 
     // Slow response → non è un errore, testa polling UX
-    // await delay(2000);
+    // await _delay(2000);
 
     const job = getJobById(jobId);
     if (!job) {
