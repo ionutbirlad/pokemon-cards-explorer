@@ -2,6 +2,10 @@ import type { RemoteJob, RemoteJobStartResponse } from "@/types/remote/job";
 import type { RemotePokemonDetail, RemotePokemonListItem } from "@/types/remote/pokemon";
 
 /**
+ * TYPES
+ */
+
+/**
  * Internal mock record used to simulate backend job lifecycle.
  */
 type JobRecord = {
@@ -17,34 +21,27 @@ export type Db = {
   jobs: Map<string, JobRecord>;
 };
 
-const now = () => Date.now();
+/**
+ * UTILS
+ */
 
+const now = () => Date.now();
 const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 /**
- * Time-based state machine.
- * queued → running → done/failed.
- * Progress grows based on elapsed time.
+ * HELPERS
  */
-const getJobStatusSnapshot = (job: JobRecord): RemoteJob => {
-  const elapsedMs = now() - job.created_at;
 
-  if (elapsedMs < 2000) {
-    return { status: "queued", progress: 0, health_points: null };
-  }
-
-  if (elapsedMs < 8000) {
-    const t = (elapsedMs - 2000) / 6000;
-    const progress = Math.min(99, Math.max(1, Math.floor(t * 100)));
-    return { status: "running", progress, health_points: null };
-  }
-
-  if (job.will_fail) {
-    return { status: "failed", progress: 100, health_points: null };
-  }
-
-  return { status: "done", progress: 100, health_points: job.final_health_points };
+const createJobId = () => `job_${Math.random().toString(16).slice(2)}_${now()}`;
+export const updatePokemonHealthPoints = (id: string, nextHp: number) => {
+  const current = db.pokemons.get(id);
+  if (!current) return;
+  db.pokemons.set(id, { ...current, health_points: nextHp });
 };
+
+/**
+ * DATABSE
+ */
 
 // ---- Pokemon seed (remote API shape) ----
 const pokemonsSeed: RemotePokemonDetail[] = [
@@ -154,12 +151,20 @@ const pokemonsSeed: RemotePokemonDetail[] = [
   },
 ];
 
+/**
+ * DB EXPORT
+ */
+
 export const db: Db = {
   pokemons: new Map(pokemonsSeed.map((p) => [p.id, p])),
   jobs: new Map(),
 };
 
-// ---- Pokemon helpers ----
+/**
+ * FUNCTIONS USED BY APIs
+ */
+
+// ---- Pokemon ----
 
 export const getPokemonList = (): RemotePokemonListItem[] =>
   Array.from(db.pokemons.values()).map((p) => ({
@@ -171,15 +176,7 @@ export const getPokemonList = (): RemotePokemonListItem[] =>
 
 export const getPokemonById = (id: string): RemotePokemonDetail | undefined => db.pokemons.get(id);
 
-export const updatePokemonHealthPoints = (id: string, nextHp: number) => {
-  const current = db.pokemons.get(id);
-  if (!current) return;
-  db.pokemons.set(id, { ...current, health_points: nextHp });
-};
-
-// ---- Job helpers ----
-
-const createJobId = () => `job_${Math.random().toString(16).slice(2)}_${now()}`;
+// ---- Job ----
 
 /**
  * Creates a job linked to an item.
@@ -216,4 +213,33 @@ export const getJobById = (jobId: string): RemoteJob | undefined => {
   }
 
   return snapshot;
+};
+
+/**
+ * JOB WORKER SIMULATOR
+ */
+
+/**
+ * Time-based state machine.
+ * queued → running → done/failed.
+ * Progress grows based on elapsed time.
+ */
+const getJobStatusSnapshot = (job: JobRecord): RemoteJob => {
+  const elapsedMs = now() - job.created_at;
+
+  if (elapsedMs < 2000) {
+    return { status: "queued", progress: 0, health_points: null };
+  }
+
+  if (elapsedMs < 8000) {
+    const t = (elapsedMs - 2000) / 6000;
+    const progress = Math.min(99, Math.max(1, Math.floor(t * 100)));
+    return { status: "running", progress, health_points: null };
+  }
+
+  if (job.will_fail) {
+    return { status: "failed", progress: 100, health_points: null };
+  }
+
+  return { status: "done", progress: 100, health_points: job.final_health_points };
 };
