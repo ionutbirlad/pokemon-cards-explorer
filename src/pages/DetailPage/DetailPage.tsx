@@ -1,5 +1,5 @@
 import DOMPurify from "dompurify";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getTypologyIcon } from "@/api/mappers/typology.mapper";
@@ -12,6 +12,8 @@ import LoadingOverlay from "@/components/LoadingOverlay/LoadingOverlay";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import Button from "@/components/ui/Button/Button";
 import TextBlock from "@/components/ui/TextBlock/TextBlock";
+import { useJob } from "@/hooks/jobs/useJob";
+import { useStartJob } from "@/hooks/jobs/useStartJob";
 import { usePokemon } from "@/hooks/pokemon/usePokemon";
 import { isApiClientError, isGlobalError } from "@/lib/errors";
 import { getCardStatus } from "@/utils/getCardStatus";
@@ -19,6 +21,8 @@ import { getCardStatus } from "@/utils/getCardStatus";
 import styles from "./DetailPage.module.scss";
 
 export default function DetailPage() {
+  const [jobId, setJobId] = useState<string | undefined>(undefined);
+
   // --- ROUTING ---
   const { id: pokemonId } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -26,9 +30,13 @@ export default function DetailPage() {
   // --- DATA ---
   const pokemonQuery = usePokemon(pokemonId);
   const pokemon = pokemonQuery.data;
+  const startJob = useStartJob();
+  const jobQuery = useJob(jobId);
 
   // --- ERROR HANDLING ---
   const isLocalPokemonError = pokemonQuery.isError && !isGlobalError(pokemonQuery.error);
+  const isLocalStartJobError = startJob.isError && !isGlobalError(startJob.error);
+  const isLocalUseJobError = jobQuery.isError && !isGlobalError(jobQuery.error);
   const is404 = isApiClientError(pokemonQuery.error) && pokemonQuery.error.status === 404;
 
   useEffect(() => {
@@ -37,8 +45,14 @@ export default function DetailPage() {
 
   if (is404) return null;
 
-  const errorMessage = isApiClientError(pokemonQuery.error)
+  const pokemonErrorMessage = isApiClientError(pokemonQuery.error)
     ? pokemonQuery.error.message
+    : "Something went wrong. Please try again.";
+  const startJobErrorMessage = isApiClientError(startJob.error)
+    ? startJob.error.message
+    : "Something went wrong. Please try again.";
+  const useJobErrorMessage = isApiClientError(jobQuery.error)
+    ? jobQuery.error.message
     : "Something went wrong. Please try again.";
 
   if (pokemonQuery.isLoading) return <LoadingOverlay />;
@@ -67,6 +81,19 @@ export default function DetailPage() {
       ]
     : [];
 
+  // --- COMBAT FEATURE HANDLING ---
+
+  const handleCombatStart = () => {
+    startJob.mutate(
+      { itemId: pokemonId! },
+      {
+        onSuccess: (data) => {
+          setJobId(data.job_id);
+        },
+      },
+    );
+  };
+
   return (
     <section className={styles.page}>
       {/* Hero banner */}
@@ -90,7 +117,7 @@ export default function DetailPage() {
                 {isLocalPokemonError && (
                   <TextBlock
                     variant="empty"
-                    description={errorMessage}
+                    description={pokemonErrorMessage}
                     className={styles["textBlock--error"]}
                   />
                 )}
@@ -133,10 +160,12 @@ export default function DetailPage() {
                       items={widgetItems}
                       status={cardStatus}
                     />
+                    {isLocalStartJobError && <span>{startJobErrorMessage}</span>}
+                    {isLocalUseJobError && <span>{useJobErrorMessage}</span>}
                   </div>
                   <Button
                     className={styles["panel__top-right-fight-button"]}
-                    onClick={() => {}}
+                    onClick={handleCombatStart}
                     status="active"
                   >
                     SIMULA COMBATTIMENTO
