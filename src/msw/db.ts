@@ -14,7 +14,6 @@ type JobRecord = {
 
 export type Db = {
   pokemons: Map<string, RemotePokemonDetail>;
-  relatedById: Record<string, string[]>;
   jobs: Map<string, JobRecord>;
 };
 
@@ -155,19 +154,8 @@ const pokemonsSeed: RemotePokemonDetail[] = [
   },
 ];
 
-// Include some missing ids to simulate 404 on related click
-const relatedById: Record<string, string[]> = {
-  psyduck: ["sprigatito", "snorlax", "missing-1", "missing-2"],
-  sprigatito: ["psyduck", "fuecoco", "missing-3"],
-  snorlax: ["psyduck", "diglett", "missing-4"],
-  fuecoco: ["sprigatito", "magikarp", "missing-5"],
-  magikarp: ["psyduck", "diglett", "missing-6"],
-  diglett: ["snorlax", "magikarp", "missing-7"],
-};
-
 export const db: Db = {
   pokemons: new Map(pokemonsSeed.map((p) => [p.id, p])),
-  relatedById,
   jobs: new Map(),
 };
 
@@ -182,8 +170,6 @@ export const getPokemonList = (): RemotePokemonListItem[] =>
   }));
 
 export const getPokemonById = (id: string): RemotePokemonDetail | undefined => db.pokemons.get(id);
-
-export const getRelatedIds = (id: string): string[] => db.relatedById[id] ?? [];
 
 export const updatePokemonHealthPoints = (id: string, nextHp: number) => {
   const current = db.pokemons.get(id);

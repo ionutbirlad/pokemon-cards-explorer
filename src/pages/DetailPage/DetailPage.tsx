@@ -142,7 +142,7 @@ export default function DetailPage() {
               )}
             </div>
 
-            {/* Related — placeholder image until endpoint is implemented */}
+            {/* Related — placeholder image as specified in the instructions */}
             {pokemon && (
               <div className={styles.panel__bottom}>
                 <img
