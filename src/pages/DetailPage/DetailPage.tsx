@@ -21,10 +21,15 @@ export default function DetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { data: pokemon, isLoading, isError, error } = usePokemon(id);
+  const {
+    data: pokemon,
+    isLoading: isPokemonLoading,
+    isError: isPokemonError,
+    error: pokemonError,
+  } = usePokemon(id);
 
-  const isLocalError = isError && !isGlobalError(error);
-  const is404 = isApiClientError(error) && error.status === 404;
+  const isLocalPokemonError = isPokemonError && !isGlobalError(pokemonError);
+  const is404 = isApiClientError(pokemonError) && pokemonError.status === 404;
 
   // Redirect to 404 page if pokemon not found
   if (is404) {
@@ -32,11 +37,11 @@ export default function DetailPage() {
     return null;
   }
 
-  const errorMessage = isApiClientError(error)
-    ? error.message
+  const errorMessage = isApiClientError(pokemonError)
+    ? pokemonError.message
     : "Something went wrong. Please try again.";
 
-  if (isLoading) return <LoadingOverlay />;
+  if (isPokemonLoading) return <LoadingOverlay />;
 
   const cardStatus = pokemon ? getCardStatus(pokemon.healthPoints) : "default";
 
@@ -84,7 +89,7 @@ export default function DetailPage() {
                   </Button>
                 </div>
 
-                {isLocalError && (
+                {isLocalPokemonError && (
                   <TextBlock
                     variant="empty"
                     description={errorMessage}
