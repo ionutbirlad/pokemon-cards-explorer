@@ -19,7 +19,7 @@ import { getCardStatus } from "@/utils/getCardStatus";
 import styles from "./DetailPage.module.scss";
 
 export default function DetailPage() {
-  const { id } = useParams<{ id: string }>();
+  const { id: pokemonId } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const {
@@ -27,7 +27,7 @@ export default function DetailPage() {
     isLoading: isPokemonLoading,
     isError: isPokemonError,
     error: pokemonError,
-  } = usePokemon(id);
+  } = usePokemon(pokemonId);
 
   const isLocalPokemonError = isPokemonError && !isGlobalError(pokemonError);
   const is404 = isApiClientError(pokemonError) && pokemonError.status === 404;
