@@ -1,4 +1,5 @@
 import DOMPurify from "dompurify";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getTypologyIcon } from "@/api/mappers/typology.mapper";
@@ -32,10 +33,11 @@ export default function DetailPage() {
   const is404 = isApiClientError(pokemonError) && pokemonError.status === 404;
 
   // Redirect to 404 page if pokemon not found
-  if (is404) {
-    navigate("/404", { replace: true });
-    return null;
-  }
+  useEffect(() => {
+    if (is404) navigate("/404", { replace: true });
+  }, [is404, navigate]);
+
+  if (is404) return null;
 
   const errorMessage = isApiClientError(pokemonError)
     ? pokemonError.message
