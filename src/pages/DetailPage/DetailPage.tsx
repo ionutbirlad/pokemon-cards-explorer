@@ -19,38 +19,35 @@ import { getCardStatus } from "@/utils/getCardStatus";
 import styles from "./DetailPage.module.scss";
 
 export default function DetailPage() {
+  // --- ROUTING ---
   const { id: pokemonId } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const {
-    data: pokemon,
-    isLoading: isPokemonLoading,
-    isError: isPokemonError,
-    error: pokemonError,
-  } = usePokemon(pokemonId);
+  // --- DATA ---
+  const pokemonQuery = usePokemon(pokemonId);
+  const pokemon = pokemonQuery.data;
 
-  const isLocalPokemonError = isPokemonError && !isGlobalError(pokemonError);
-  const is404 = isApiClientError(pokemonError) && pokemonError.status === 404;
+  // --- ERROR HANDLING ---
+  const isLocalPokemonError = pokemonQuery.isError && !isGlobalError(pokemonQuery.error);
+  const is404 = isApiClientError(pokemonQuery.error) && pokemonQuery.error.status === 404;
 
-  // Redirect to 404 page if pokemon not found
   useEffect(() => {
     if (is404) navigate("/404", { replace: true });
   }, [is404, navigate]);
 
   if (is404) return null;
 
-  const errorMessage = isApiClientError(pokemonError)
-    ? pokemonError.message
+  const errorMessage = isApiClientError(pokemonQuery.error)
+    ? pokemonQuery.error.message
     : "Something went wrong. Please try again.";
 
-  if (isPokemonLoading) return <LoadingOverlay />;
+  if (pokemonQuery.isLoading) return <LoadingOverlay />;
 
+  // --- POKEMON CARD RENDERING DETAILS ---
   const cardStatus = pokemon ? getCardStatus(pokemon.healthPoints) : "default";
-
   const typologyIcon = pokemon
     ? getTypologyIcon(pokemon.typology.iconName, pokemon.typology.iconUrl)
     : null;
-
   const vulnerabilityIcon = pokemon ? (
     <img
       src={pokemon.vulnerability.iconUrl}
@@ -58,7 +55,6 @@ export default function DetailPage() {
       style={{ width: "100%", height: "100%" }}
     />
   ) : null;
-
   const widgetItems = pokemon
     ? [
         { icon: <EqualizerIcon />, label: `LV. ${pokemon.level}` },
