@@ -153,6 +153,8 @@ const pokemonsSeed: RemotePokemonDetail[] = [
 
 /**
  * DB EXPORT
+ * Defined before API helpers to keep initialization order explicit.
+ * (No real TDZ risk here — functions reference `db` but do not execute before initialization.)
  */
 
 export const db: Db = {
