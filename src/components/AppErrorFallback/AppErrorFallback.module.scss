@@ -33,9 +33,13 @@
       }
     }
 
+    &-title {
+      @include t.heading-2;
+      color: var(--color-on-surface-1);
+    }
+
     &-description {
       @include t.paragraph-1;
-
       color: var(--color-surface-1-contrast);
     }
 
