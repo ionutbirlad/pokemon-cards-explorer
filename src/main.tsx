@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 
 import { router } from "@/app/router";
+import { AppErrorBoundary } from "@/components/AppErrorBoundary/AppErrorBoundary";
 import { QueryProvider } from "@/query/QueryProvider";
 
 async function bootstrap() {
@@ -15,9 +16,11 @@ async function bootstrap() {
 
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
-      <QueryProvider>
-        <RouterProvider router={router} />
-      </QueryProvider>
+      <AppErrorBoundary>
+        <QueryProvider>
+          <RouterProvider router={router} />
+        </QueryProvider>
+      </AppErrorBoundary>
     </StrictMode>,
   );
 }
