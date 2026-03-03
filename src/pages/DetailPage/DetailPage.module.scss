@@ -125,9 +125,14 @@
         gap: var(--size-xl);
 
         &-progress {
-          @include t.paragraph-1;
+          @include t.paragraph-2;
 
           color: var(--color-on-surface-1);
+          text-align: center;
+
+          @media (min-width: 768px) {
+            @include t.paragraph-1;
+          }
         }
       }
 
