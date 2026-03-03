@@ -189,6 +189,8 @@ export const createJobForItem = (itemId: string): RemoteJobStartResponse => {
   const job_id = createJobId();
 
   const will_fail = Math.random() < 0.15;
+  const currentPokemon = db.pokemons.get(itemId);
+  const currentHp = currentPokemon?.health_points ?? 100;
 
   const record: JobRecord = {
     job_id,
@@ -196,7 +198,7 @@ export const createJobForItem = (itemId: string): RemoteJobStartResponse => {
     created_at: now(),
     will_fail,
     fail_at_progress: will_fail ? randomInt(5, 95) : null,
-    final_health_points: randomInt(0, 100),
+    final_health_points: Math.max(0, currentHp - randomInt(5, 40)),
   };
 
   db.jobs.set(job_id, record);

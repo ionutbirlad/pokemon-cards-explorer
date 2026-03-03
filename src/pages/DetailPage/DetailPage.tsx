@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import DOMPurify from "dompurify";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,6 +16,7 @@ import ProgressBar from "@/components/ui/ProgressBar/ProgressBar";
 import TextBlock from "@/components/ui/TextBlock/TextBlock";
 import { useJob } from "@/hooks/jobs/useJob";
 import { useStartJob } from "@/hooks/jobs/useStartJob";
+import { pokemonKeys } from "@/hooks/pokemon/keys";
 import { usePokemon } from "@/hooks/pokemon/usePokemon";
 import { isApiClientError, isGlobalError } from "@/lib/errors";
 import { getCardStatus } from "@/utils/getCardStatus";
@@ -31,6 +33,7 @@ export default function DetailPage() {
   const navigate = useNavigate();
 
   // --- DATA ---
+  const qc = useQueryClient();
   const pokemonQuery = usePokemon(pokemonId);
   const pokemon = pokemonQuery.data;
   const startJob = useStartJob();
@@ -41,6 +44,12 @@ export default function DetailPage() {
     isFighting: jobQuery.data?.status === "running" || jobQuery.data?.status === "queued",
     state: jobId == null ? "idle" : ((jobQuery.data?.status ?? "queued") as CombatState),
   };
+
+  useEffect(() => {
+    if (jobQuery.data?.status === "done") {
+      qc.invalidateQueries({ queryKey: pokemonKeys.detail(pokemonId!) });
+    }
+  }, [jobQuery.data?.status, pokemonId, qc]);
 
   // --- ERROR HANDLING ---
   const isLocalPokemonError = pokemonQuery.isError && !isGlobalError(pokemonQuery.error);
@@ -127,6 +136,11 @@ export default function DetailPage() {
 
   const handleCombatStart = () => {
     if (combatInfo.isFighting) return;
+
+    if (effectiveStatus === "expired") {
+      window.location.reload();
+      return;
+    }
 
     setJobId(undefined);
 
