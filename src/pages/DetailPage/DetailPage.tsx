@@ -108,8 +108,7 @@ export default function DetailPage() {
         ? 100
         : null;
 
-  const hasLost =
-    combatInfo.state === "done" && (effectiveStatus === "expired" || effectiveStatus === "warning");
+  const hasLost = combatInfo.state === "done" && effectiveStatus === "expired";
 
   const hasWon = combatInfo.state === "done" && !hasLost;
 
