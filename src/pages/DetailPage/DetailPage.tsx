@@ -54,8 +54,9 @@ export default function DetailPage() {
 
   // --- SIDE EFFECTS ---
   useEffect(() => {
+    if (!pokemonId) return;
     if (jobQuery.data?.status === "done") {
-      qc.invalidateQueries({ queryKey: pokemonKeys.detail(pokemonId!) });
+      qc.invalidateQueries({ queryKey: pokemonKeys.detail(pokemonId) });
     }
   }, [jobQuery.data?.status, pokemonId, qc]);
 
@@ -71,6 +72,7 @@ export default function DetailPage() {
   );
 
   // --- GUARDS ---
+  if (!pokemonId) return null;
   if (is404) return null;
   if (pokemonQuery.isLoading) return <LoadingOverlay />;
 
@@ -154,7 +156,7 @@ export default function DetailPage() {
     setJobId(undefined);
 
     startJob.mutate(
-      { itemId: pokemonId! },
+      { itemId: pokemonId },
       {
         onSuccess: (data) => {
           setJobId(data.job_id);
