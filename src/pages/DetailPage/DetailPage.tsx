@@ -11,6 +11,7 @@ import StarIcon from "@/assets/icons/star.svg?react";
 import LoadingOverlay from "@/components/LoadingOverlay/LoadingOverlay";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import Button from "@/components/ui/Button/Button";
+import ProgressBar from "@/components/ui/ProgressBar/ProgressBar";
 import TextBlock from "@/components/ui/TextBlock/TextBlock";
 import { useJob } from "@/hooks/jobs/useJob";
 import { useStartJob } from "@/hooks/jobs/useStartJob";
@@ -33,9 +34,9 @@ export default function DetailPage() {
   const startJob = useStartJob();
   const jobQuery = useJob(jobId);
   const combatInfo = {
-    job: jobQuery,
     progress: jobQuery.data?.progress,
     status: jobQuery.data?.status,
+    isFighting: jobQuery.data?.status === "running" || jobQuery.data?.status === "queued",
   };
 
   // --- ERROR HANDLING ---
@@ -100,6 +101,10 @@ export default function DetailPage() {
   // --- COMBAT FEATURE HANDLING ---
 
   const handleCombatStart = () => {
+    if (combatInfo.isFighting) return;
+
+    setJobId(undefined);
+
     startJob.mutate(
       { itemId: pokemonId! },
       {
@@ -179,15 +184,19 @@ export default function DetailPage() {
                       errorOverlayText={errorOverlayText}
                     />
                     <div className={styles["panel__top-right-pokemon-card-progress"]}>
-                      È tutto pronto, inizia la sfida!
+                      {combatInfo.status === "running" || combatInfo.status === "queued" ? (
+                        <ProgressBar progress={combatInfo.progress ?? 0} />
+                      ) : (
+                        <>È tutto pronto, inizia la sfida!</>
+                      )}
                     </div>
                   </div>
                   <Button
                     className={styles["panel__top-right-fight-button"]}
                     onClick={handleCombatStart}
-                    status="active"
+                    status={combatInfo.isFighting ? "disabled" : "active"}
                   >
-                    SIMULA COMBATTIMENTO
+                    {combatInfo.isFighting ? "STA COMBATTENDO..." : "SIMULA COMBATTIMENTO"}
                   </Button>
                 </div>
               )}
