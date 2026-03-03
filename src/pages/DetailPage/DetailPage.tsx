@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import DOMPurify from "dompurify";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getTypologyIcon } from "@/api/mappers/typology.mapper";
@@ -62,6 +62,13 @@ export default function DetailPage() {
   useEffect(() => {
     if (is404) navigate("/404", { replace: true });
   }, [is404, navigate]);
+
+  // --- MEMOS ---
+  const longDescription = pokemon?.longDescription;
+  const sanitizedLongDescription = useMemo(
+    () => DOMPurify.sanitize(longDescription ?? ""),
+    [longDescription],
+  );
 
   // --- GUARDS ---
   if (is404) return null;
@@ -198,7 +205,7 @@ export default function DetailPage() {
                     <div
                       className={styles["panel__top-left-description"]}
                       dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(pokemon.longDescription),
+                        __html: sanitizedLongDescription,
                       }}
                     />
                   </>
