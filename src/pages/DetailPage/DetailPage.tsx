@@ -45,23 +45,26 @@ export default function DetailPage() {
     state: jobId == null ? "idle" : ((jobQuery.data?.status ?? "queued") as CombatState),
   };
 
-  useEffect(() => {
-    if (jobQuery.data?.status === "done") {
-      qc.invalidateQueries({ queryKey: pokemonKeys.detail(pokemonId!) });
-    }
-  }, [jobQuery.data?.status, pokemonId, qc]);
-
   // --- ERROR HANDLING ---
   const isLocalPokemonError = pokemonQuery.isError && !isGlobalError(pokemonQuery.error);
   const isLocalStartJobError = startJob.isError && !isGlobalError(startJob.error);
   const isLocalUseJobError = jobQuery.isError && !isGlobalError(jobQuery.error);
   const is404 = isApiClientError(pokemonQuery.error) && pokemonQuery.error.status === 404;
 
+  // --- SIDE EFFECTS ---
+  useEffect(() => {
+    if (jobQuery.data?.status === "done") {
+      qc.invalidateQueries({ queryKey: pokemonKeys.detail(pokemonId!) });
+    }
+  }, [jobQuery.data?.status, pokemonId, qc]);
+
   useEffect(() => {
     if (is404) navigate("/404", { replace: true });
   }, [is404, navigate]);
 
+  // --- GUARDS ---
   if (is404) return null;
+  if (pokemonQuery.isLoading) return <LoadingOverlay />;
 
   const pokemonErrorMessage = isApiClientError(pokemonQuery.error)
     ? pokemonQuery.error.message
@@ -70,8 +73,6 @@ export default function DetailPage() {
     ? startJob.error.message
     : undefined;
   const useJobErrorMessage = isApiClientError(jobQuery.error) ? jobQuery.error.message : undefined;
-
-  if (pokemonQuery.isLoading) return <LoadingOverlay />;
 
   // --- POKEMON CARD RENDERING DETAILS ---
   const baseHp = pokemon?.healthPoints ?? 0;
@@ -133,7 +134,6 @@ export default function DetailPage() {
             : "SIMULA COMBATTIMENTO";
 
   // --- COMBAT FEATURE HANDLING ---
-
   const handleCombatStart = () => {
     if (combatInfo.isFighting) return;
 
