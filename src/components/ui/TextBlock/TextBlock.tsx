@@ -4,14 +4,14 @@ type TextBlockVariant = "default" | "empty";
 
 type TextBlockProps = {
   title?: string;
-  description: string;
+  description?: string;
   variant?: TextBlockVariant;
   className?: string;
 };
 
 export default function TextBlock({
   title,
-  description,
+  description = "Something went wrong. Please try again.",
   variant = "default",
   className,
 }: TextBlockProps) {
