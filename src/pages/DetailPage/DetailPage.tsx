@@ -224,7 +224,7 @@ export default function DetailPage() {
                     />
                     <div className={styles["panel__top-right-pokemon-card-progress"]}>
                       {progressToShow != null ? (
-                        <ProgressBar progress={combatInfo.progress ?? 0} />
+                        <ProgressBar progress={progressToShow} />
                       ) : (
                         <>È tutto pronto, inizia la sfida!</>
                       )}
