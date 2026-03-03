@@ -178,6 +178,9 @@ export default function DetailPage() {
                       showErrorOverlay={showErrorOverlay}
                       errorOverlayText={errorOverlayText}
                     />
+                    <div className={styles["panel__top-right-pokemon-card-progress"]}>
+                      È tutto pronto, inizia la sfida!
+                    </div>
                   </div>
                   <Button
                     className={styles["panel__top-right-fight-button"]}

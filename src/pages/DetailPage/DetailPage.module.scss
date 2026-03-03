@@ -106,7 +106,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: var(--size-2xl);
+      gap: var(--size-xl);
       flex-shrink: 0;
       padding: var(--size-3xl) var(--size-4xl);
       border-radius: var(--radius-main);
@@ -118,6 +118,17 @@
 
       &-pokemon-card {
         max-width: 260px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--size-xl);
+
+        &-progress {
+          @include t.paragraph-1;
+
+          color: var(--color-on-surface-1);
+        }
       }
 
       &-fight-button {
