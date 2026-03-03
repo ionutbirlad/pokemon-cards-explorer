@@ -32,6 +32,11 @@ export default function DetailPage() {
   const pokemon = pokemonQuery.data;
   const startJob = useStartJob();
   const jobQuery = useJob(jobId);
+  const combatInfo = {
+    job: jobQuery,
+    progress: jobQuery.data?.progress,
+    status: jobQuery.data?.status,
+  };
 
   // --- ERROR HANDLING ---
   const isLocalPokemonError = pokemonQuery.isError && !isGlobalError(pokemonQuery.error);
@@ -47,21 +52,27 @@ export default function DetailPage() {
 
   const pokemonErrorMessage = isApiClientError(pokemonQuery.error)
     ? pokemonQuery.error.message
-    : "Something went wrong. Please try again.";
+    : undefined;
   const startJobErrorMessage = isApiClientError(startJob.error)
     ? startJob.error.message
-    : "Something went wrong. Please try again.";
-  const useJobErrorMessage = isApiClientError(jobQuery.error)
-    ? jobQuery.error.message
-    : "Something went wrong. Please try again.";
+    : undefined;
+  const useJobErrorMessage = isApiClientError(jobQuery.error) ? jobQuery.error.message : undefined;
 
   if (pokemonQuery.isLoading) return <LoadingOverlay />;
 
   // --- POKEMON CARD RENDERING DETAILS ---
-  const cardStatus = pokemon ? getCardStatus(pokemon.healthPoints) : "default";
+  const baseHp = pokemon?.healthPoints ?? 0;
+  const effectiveHp =
+    jobQuery.data?.status === "done" && jobQuery.data.health_points != null
+      ? jobQuery.data.health_points
+      : baseHp;
+
+  const effectiveStatus = getCardStatus(effectiveHp);
+
   const typologyIcon = pokemon
     ? getTypologyIcon(pokemon.typology.iconName, pokemon.typology.iconUrl)
     : null;
+
   const vulnerabilityIcon = pokemon ? (
     <img
       src={pokemon.vulnerability.iconUrl}
@@ -69,17 +80,22 @@ export default function DetailPage() {
       style={{ width: "100%", height: "100%" }}
     />
   ) : null;
+
   const widgetItems = pokemon
     ? [
         { icon: <EqualizerIcon />, label: `LV. ${pokemon.level}` },
         { icon: vulnerabilityIcon, label: `VUL. ${pokemon.vulnerability.value}` },
         {
-          icon: cardStatus === "expired" ? <SkullOutlineIcon /> : <HeartIcon />,
-          label: `PS. ${pokemon.healthPoints}`,
-          status: cardStatus,
+          icon: effectiveStatus === "expired" ? <SkullOutlineIcon /> : <HeartIcon />,
+          label: `PS. ${effectiveHp}`,
+          status: effectiveStatus,
         },
       ]
     : [];
+
+  const showErrorOverlay =
+    isLocalStartJobError || isLocalUseJobError || combatInfo.status === "failed";
+  const errorOverlayText = startJobErrorMessage || useJobErrorMessage || undefined;
 
   // --- COMBAT FEATURE HANDLING ---
 
@@ -158,10 +174,10 @@ export default function DetailPage() {
                       footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
                       footerIcons={[typologyIcon, <StarIcon />]}
                       items={widgetItems}
-                      status={cardStatus}
+                      status={effectiveStatus}
+                      showErrorOverlay={showErrorOverlay}
+                      errorOverlayText={errorOverlayText}
                     />
-                    {isLocalStartJobError && <span>{startJobErrorMessage}</span>}
-                    {isLocalUseJobError && <span>{useJobErrorMessage}</span>}
                   </div>
                   <Button
                     className={styles["panel__top-right-fight-button"]}

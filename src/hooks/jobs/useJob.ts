@@ -4,7 +4,7 @@ import { fetchJobById } from "@/api/jobsApi";
 
 import { jobKeys } from "./keys";
 
-// type JobStatus = "queued" | "running" | "done" | "failed";
+type JobStatus = "queued" | "running" | "done" | "failed";
 
 export function useJob(jobId: string | undefined) {
   return useQuery({
@@ -12,10 +12,10 @@ export function useJob(jobId: string | undefined) {
     queryFn: ({ signal }) => fetchJobById(jobId as string, signal),
     enabled: Boolean(jobId),
     // Poll job status every 1s until it reaches a terminal state (done | failed)
-    // refetchInterval: (query) => {
-    //   const data = query.state.data as { status?: JobStatus } | undefined;
-    //   if (!data?.status) return 1000;
-    //   return data.status === "done" || data.status === "failed" ? false : 1000;
-    // },
+    refetchInterval: (query) => {
+      const data = query.state.data as { status?: JobStatus } | undefined;
+      if (!data?.status) return 1000;
+      return data.status === "done" || data.status === "failed" ? false : 1000;
+    },
   });
 }
