@@ -13,6 +13,7 @@ type JobRecord = {
   item_id: string;
   created_at: number;
   will_fail: boolean;
+  fail_at_progress: number | null;
   final_health_points: number;
 };
 
@@ -187,11 +188,14 @@ export const getPokemonById = (id: string): RemotePokemonDetail | undefined => d
 export const createJobForItem = (itemId: string): RemoteJobStartResponse => {
   const job_id = createJobId();
 
+  const will_fail = Math.random() < 0.15;
+
   const record: JobRecord = {
     job_id,
     item_id: itemId,
     created_at: now(),
-    will_fail: Math.random() < 0.15,
+    will_fail,
+    fail_at_progress: will_fail ? randomInt(5, 95) : null,
     final_health_points: randomInt(0, 100),
   };
 
@@ -236,11 +240,12 @@ const getJobStatusSnapshot = (job: JobRecord): RemoteJob => {
   if (elapsedMs < 8000) {
     const t = (elapsedMs - 2000) / 6000;
     const progress = Math.min(99, Math.max(1, Math.floor(t * 100)));
-    return { status: "running", progress, health_points: null };
-  }
 
-  if (job.will_fail) {
-    return { status: "failed", progress: 100, health_points: null };
+    if (job.will_fail && job.fail_at_progress != null && progress >= job.fail_at_progress) {
+      return { status: "failed", progress, health_points: null };
+    }
+
+    return { status: "running", progress, health_points: null };
   }
 
   return { status: "done", progress: 100, health_points: job.final_health_points };
