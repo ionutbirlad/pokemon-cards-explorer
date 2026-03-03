@@ -14,6 +14,7 @@ import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import Button from "@/components/ui/Button/Button";
 import ProgressBar from "@/components/ui/ProgressBar/ProgressBar";
 import TextBlock from "@/components/ui/TextBlock/TextBlock";
+import { jobKeys } from "@/hooks/jobs/keys";
 import { useJob } from "@/hooks/jobs/useJob";
 import { useStartJob } from "@/hooks/jobs/useStartJob";
 import { pokemonKeys } from "@/hooks/pokemon/keys";
@@ -142,6 +143,7 @@ export default function DetailPage() {
       return;
     }
 
+    if (jobId) qc.removeQueries({ queryKey: jobKeys.byId(jobId) });
     setJobId(undefined);
 
     startJob.mutate(
