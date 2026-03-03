@@ -43,7 +43,7 @@ export default function PokemonCard({
   status = "default",
   variant = "full",
   showErrorOverlay = false,
-  errorOverlayText = "Oops, qualcosa è andato storto...",
+  errorOverlayText = "Oops... qualcosa è andato storto!",
 }: PokemonCardProps) {
   const widgetItems = items.map((item) => ({
     icon: status !== "default" && item.iconOutline ? item.iconOutline : item.icon,
