@@ -189,6 +189,7 @@ export const createJobForItem = (itemId: string): RemoteJobStartResponse => {
   const job_id = createJobId();
 
   const will_fail = Math.random() < 0.15;
+  // Preserve current HP across combat rounds (mock persistence)
   const currentPokemon = db.pokemons.get(itemId);
   const currentHp = currentPokemon?.health_points ?? 100;
 
