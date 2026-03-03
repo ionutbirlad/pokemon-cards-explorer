@@ -21,6 +21,8 @@ import { getCardStatus } from "@/utils/getCardStatus";
 
 import styles from "./DetailPage.module.scss";
 
+type CombatState = "idle" | "queued" | "running" | "done" | "failed";
+
 export default function DetailPage() {
   const [jobId, setJobId] = useState<string | undefined>(undefined);
 
@@ -37,6 +39,7 @@ export default function DetailPage() {
     progress: jobQuery.data?.progress,
     status: jobQuery.data?.status,
     isFighting: jobQuery.data?.status === "running" || jobQuery.data?.status === "queued",
+    state: jobId == null ? "idle" : ((jobQuery.data?.status ?? "queued") as CombatState),
   };
 
   // --- ERROR HANDLING ---
@@ -97,6 +100,29 @@ export default function DetailPage() {
   const showErrorOverlay =
     isLocalStartJobError || isLocalUseJobError || combatInfo.status === "failed";
   const errorOverlayText = startJobErrorMessage || useJobErrorMessage || undefined;
+
+  const progressToShow =
+    combatInfo.state === "queued" || combatInfo.state === "running"
+      ? (jobQuery.data?.progress ?? 0)
+      : combatInfo.state === "done" || combatInfo.state === "failed"
+        ? 100
+        : null;
+
+  const hasLost =
+    combatInfo.state === "done" && (effectiveStatus === "expired" || effectiveStatus === "warning");
+
+  const hasWon = combatInfo.state === "done" && !hasLost;
+
+  const buttonLabel =
+    combatInfo.state === "running" || combatInfo.state === "queued"
+      ? "STA COMBATTENDO..."
+      : combatInfo.state === "failed"
+        ? "Errore tecnico. Riprova"
+        : hasLost
+          ? "HAI PERSO... RIPROVA!"
+          : hasWon
+            ? "HAI VINTO! RIGIOCA"
+            : "SIMULA COMBATTIMENTO";
 
   // --- COMBAT FEATURE HANDLING ---
 
@@ -184,7 +210,7 @@ export default function DetailPage() {
                       errorOverlayText={errorOverlayText}
                     />
                     <div className={styles["panel__top-right-pokemon-card-progress"]}>
-                      {combatInfo.status === "running" || combatInfo.status === "queued" ? (
+                      {progressToShow != null ? (
                         <ProgressBar progress={combatInfo.progress ?? 0} />
                       ) : (
                         <>È tutto pronto, inizia la sfida!</>
@@ -196,7 +222,7 @@ export default function DetailPage() {
                     onClick={handleCombatStart}
                     status={combatInfo.isFighting ? "disabled" : "active"}
                   >
-                    {combatInfo.isFighting ? "STA COMBATTENDO..." : "SIMULA COMBATTIMENTO"}
+                    {buttonLabel}
                   </Button>
                 </div>
               )}
