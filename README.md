@@ -397,6 +397,16 @@ Tokens are organized into:
 - `_sizes.scss` — spacing scale
 - `_radius.scss` — border radius tokens
 
+### Known Warning — Sass `@import` Deprecation
+
+Build and Storybook output a deprecation warning for `@import` usage in `styles/index.scss`:
+
+```
+Deprecation Warning [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+```
+
+This is a known and intentional trade-off. The alternative (`@use` + `@forward`) would require explicitly importing token files in every component that needs them. Since tokens are defined as CSS custom properties on `:root`, using `@import` in a single entry point keeps them globally available without any per-component import overhead. The warning does not affect functionality and will be addressed in a future migration to Dart Sass 3.x.
+
 ### Component Structure
 
 Components are split into two categories:
@@ -434,6 +444,46 @@ This separation keeps the system predictable, easier to test, and easier to evol
 | Component-driven with Storybook | components validated in isolation before page integration         |
 | isLoading + LoadingOverlay      | simple and correct for SPA, avoids Router loader blank page issue |
 | GitHub Actions CI               | automated format, lint, typecheck and build on every PR           |
+
+---
+
+# ⚡️ Performance Pass (v1-alfa)
+
+A dedicated performance pass was carried out on the `fix/improve-performance` branch, guided by profiling with **React DevTools Profiler** during the combat simulation flow.
+
+### Changes
+
+**`PokemonCard` memoization** — wrapped with `React.memo` to prevent re-renders during polling when props have not changed. The card is one of the heaviest components in the app and was re-rendering on every poll tick without it.
+
+**ViewModel `useMemo`** — `typologyIcon`, `vulnerabilityIcon`, `widgetItems`, and `footerIcons` are now memoized inside `usePokemonCardCombat`. These values produce React nodes and arrays, which would otherwise be recreated each render and cause `React.memo` to always fail its shallow comparison.
+
+**`useCallback` on combat handler** — `handleCombatStart` is now wrapped in `useCallback` to produce a stable function reference and avoid unnecessary re-renders of components receiving it as a prop.
+
+**DOMPurify memoization** — `sanitizedLongDescription` is wrapped in `useMemo` to avoid re-running the sanitization on every render.
+
+**Hook ordering fix** — the combat handler was moved above guard clauses to maintain correct React hook ordering.
+
+**Cleanup** — removed unused variables (`combatInfo`, stale page-level computed values) that were left over from earlier iterations.
+
+### Result
+
+After the pass, `PokemonCard` re-renders only when relevant values actually change — confirmed via React DevTools Profiler.
+
+---
+
+# 🗓 Planned Improvements
+
+The following items were planned but not implemented due to time constraints:
+
+**UX refinements** — loading skeletons, disabled states, micro-interactions, and general UX polish across the combat flow and page transitions.
+
+**Targeted testing** — unit and integration tests covering app error handling (API and runtime), and the data layer (mappers, API wrapper, error normalization).
+
+**`clsx` integration** — replace manual class composition with `clsx` for cleaner and more maintainable conditional class logic.
+
+**i18n / Translations** — internationalization support for UI strings.
+
+**Global error UI** — replace the current `console.error` placeholder for global errors with a proper toast or notification system visible to the user.
 
 ---
 
