@@ -48,7 +48,26 @@ This avoids coupling UI components to raw API responses and keeps each layer ind
 
 ---
 
-### 2. Domain Mapping
+### 2. Data Layer
+
+The data layer is split into two levels.
+
+**Generic `api.ts` wrapper** — handles all transport concerns:
+
+- distinguishes network errors (fetch throws) from HTTP errors (non-2xx responses)
+- safely parses response payloads without assuming shape
+- returns typed error structures compatible with TanStack Query
+- AbortError is detected and re-thrown separately so callers can ignore it silently
+
+**Entity-specific APIs** (`pokemonApi.ts`, `jobsApi.ts`) — handle domain requests:
+
+- call the generic wrapper and apply the relevant mapper before returning
+- throw typed `ApiClientError` instances — TanStack Query catches these automatically
+- no transport or HTTP concerns leak into hooks or UI components
+
+---
+
+### 3. Domain Mapping
 
 API responses are **never used directly in the UI**.
 
@@ -91,7 +110,7 @@ export function mapJob(remote: RemoteJob, jobId: string): Job {
 
 ---
 
-### 3. Error Handling
+### 4. Error Handling
 
 Five error layers are handled consistently across the application:
 
@@ -107,7 +126,7 @@ Local errors (4xx) are handled inline in the component using a `TextBlock` with 
 
 ---
 
-### 4. ViewModel Layer
+### 5. ViewModel Layer
 
 To keep components clean and focused on rendering, a **ViewModel layer** was introduced for the detail page combat feature.
 
@@ -129,7 +148,7 @@ The page component acts purely as an orchestrator — it handles data fetching, 
 
 ---
 
-### 5. React Query for Server State
+### 6. React Query for Server State
 
 TanStack Query is used for:
 
@@ -142,7 +161,7 @@ This eliminates manual loading/error state management and keeps server state pre
 
 ---
 
-### 6. HTML Sanitization
+### 7. HTML Sanitization
 
 The Pokémon detail page renders a `longDescription` field that arrives from the backend as an HTML string containing `<p>`, `<ul>`, and `<li>` tags.
 
@@ -152,7 +171,7 @@ The container component applies scoped SCSS styles to the rendered HTML tags, ke
 
 ---
 
-### 7. Component-Driven Development
+### 8. Component-Driven Development
 
 UI components were built following a **component-driven development** approach using Storybook.
 
@@ -164,9 +183,11 @@ Each component was developed and validated in isolation before being integrated 
 
 All `components/ui` entries (`Button`, `Badge`, `ProgressBar`, `Spinner`, `TextBlock`) and the `PokemonCard` domain component have corresponding Storybook stories covering their variants and states.
 
+> The full design system and component implementation can be reviewed in [PR #4 — Design System & Components](https://github.com/ionutbirlad/pokemon-cards-explorer/pull/4).
+
 ---
 
-### 8. Loading State
+### 9. Loading State
 
 Loading state is managed via `isLoading` from TanStack Query hooks, rendered through a `LoadingOverlay` component with `position: fixed`.
 
