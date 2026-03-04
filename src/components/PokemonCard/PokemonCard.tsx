@@ -26,6 +26,8 @@ type PokemonCardProps = {
   // UI
   status?: CardStatus;
   variant?: "full" | "compact";
+  showErrorOverlay?: boolean;
+  errorOverlayText?: string;
 };
 
 export default function PokemonCard({
@@ -40,6 +42,8 @@ export default function PokemonCard({
   items,
   status = "default",
   variant = "full",
+  showErrorOverlay = false,
+  errorOverlayText = "Oops... qualcosa è andato storto!",
 }: PokemonCardProps) {
   const widgetItems = items.map((item) => ({
     icon: status !== "default" && item.iconOutline ? item.iconOutline : item.icon,
@@ -48,7 +52,13 @@ export default function PokemonCard({
   }));
 
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${!showErrorOverlay && styles["card--shadow"]}`}>
+      {showErrorOverlay && (
+        <div className={styles.card__overlay}>
+          <div className={styles["card__overlay-inner"]}>{errorOverlayText}</div>
+        </div>
+      )}
+
       {variant === "full" && (
         <CardHeading
           cardNumber={number}

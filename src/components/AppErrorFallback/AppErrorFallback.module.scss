@@ -1,0 +1,50 @@
+@use "@/styles/tokens/typography" as t;
+
+.wrapper {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-2xl);
+  background: var(--color-surface-2);
+
+  &__card {
+    width: 100%;
+    height: fit-content;
+    max-width: 520px;
+    padding: var(--size-3xl);
+    border-radius: var(--radius-main);
+    background: var(--color-surface-1);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: var(--size-xl);
+
+    &-imageWrapper {
+      display: flex;
+      justify-content: center;
+
+      &-image {
+        width: 140px;
+        max-width: 60%;
+        object-fit: contain;
+        image-rendering: pixelated;
+      }
+    }
+
+    &-title {
+      @include t.heading-2;
+      color: var(--color-on-surface-1);
+    }
+
+    &-description {
+      @include t.paragraph-1;
+      color: var(--color-surface-1-contrast);
+    }
+
+    &-button {
+      align-self: center;
+    }
+  }
+}

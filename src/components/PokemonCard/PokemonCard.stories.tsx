@@ -15,6 +15,22 @@ const meta: Meta<typeof PokemonCard> = {
   title: "PokemonCard/PokemonCard",
   component: PokemonCard,
   tags: ["autodocs"],
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          width: 300,
+          height: 286,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "0 auto",
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
@@ -69,4 +85,14 @@ export const Expired: Story = {
 
 export const Compact: Story = {
   args: { ...defaultArgs, variant: "compact" },
+};
+
+export const WithErrorOverlay: Story = {
+  args: {
+    ...defaultArgs,
+    status: "default",
+    variant: "full",
+    showErrorOverlay: true,
+    errorOverlayText: "Oops... qualcosa è andato storto!",
+  },
 };

@@ -1,68 +1,116 @@
+import { useQueryClient } from "@tanstack/react-query";
 import DOMPurify from "dompurify";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { getTypologyIcon } from "@/api/mappers/typology.mapper";
 import ArrowBackIcon from "@/assets/icons/arrow_back.svg?react";
-import EqualizerIcon from "@/assets/icons/equalizer.svg?react";
-import HeartIcon from "@/assets/icons/favorite.svg?react";
-import SkullOutlineIcon from "@/assets/icons/skull_outline.svg?react";
 import StarIcon from "@/assets/icons/star.svg?react";
 import LoadingOverlay from "@/components/LoadingOverlay/LoadingOverlay";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import Button from "@/components/ui/Button/Button";
+import ProgressBar from "@/components/ui/ProgressBar/ProgressBar";
 import TextBlock from "@/components/ui/TextBlock/TextBlock";
+import { jobKeys } from "@/hooks/jobs/keys";
+import { useJob } from "@/hooks/jobs/useJob";
+import { useStartJob } from "@/hooks/jobs/useStartJob";
+import { pokemonKeys } from "@/hooks/pokemon/keys";
 import { usePokemon } from "@/hooks/pokemon/usePokemon";
+import { usePokemonCardCombat } from "@/hooks/viewModels/usePokemonCardCombat.viewmodel";
 import { isApiClientError, isGlobalError } from "@/lib/errors";
-import { getCardStatus } from "@/utils/getCardStatus";
 
 import styles from "./DetailPage.module.scss";
 
+type CombatState = "idle" | "queued" | "running" | "done" | "failed";
+
 export default function DetailPage() {
-  const { id } = useParams<{ id: string }>();
+  const [jobId, setJobId] = useState<string | undefined>(undefined);
+
+  // --- ROUTING ---
+  const { id: pokemonId } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { data: pokemon, isLoading, isError, error } = usePokemon(id);
+  // --- DATA ---
+  const qc = useQueryClient();
+  const pokemonQuery = usePokemon(pokemonId);
+  const pokemon = pokemonQuery.data;
+  const startJob = useStartJob();
+  const jobQuery = useJob(jobId);
+  const combatInfo = {
+    progress: jobQuery.data?.progress,
+    status: jobQuery.data?.status,
+    isFighting: jobQuery.data?.status === "running" || jobQuery.data?.status === "queued",
+    state: jobId == null ? "idle" : ((jobQuery.data?.status ?? "queued") as CombatState),
+  };
 
-  const isLocalError = isError && !isGlobalError(error);
-  const is404 = isApiClientError(error) && error.status === 404;
+  // --- ERROR HANDLING ---
+  const isLocalPokemonError = pokemonQuery.isError && !isGlobalError(pokemonQuery.error);
+  const isLocalStartJobError = startJob.isError && !isGlobalError(startJob.error);
+  const isLocalUseJobError = jobQuery.isError && !isGlobalError(jobQuery.error);
+  const is404 = isApiClientError(pokemonQuery.error) && pokemonQuery.error.status === 404;
+  const pokemonErrorMessage = isApiClientError(pokemonQuery.error)
+    ? pokemonQuery.error.message
+    : undefined;
+  const startJobErrorMessage = isApiClientError(startJob.error)
+    ? startJob.error.message
+    : undefined;
+  const useJobErrorMessage = isApiClientError(jobQuery.error) ? jobQuery.error.message : undefined;
 
-  // Redirect to 404 page if pokemon not found
-  if (is404) {
-    navigate("/404", { replace: true });
-    return null;
-  }
+  // --- SIDE EFFECTS ---
+  useEffect(() => {
+    if (!pokemonId) return;
+    if (jobQuery.data?.status === "done") {
+      qc.invalidateQueries({ queryKey: pokemonKeys.detail(pokemonId) });
+    }
+  }, [jobQuery.data?.status, pokemonId, qc]);
 
-  const errorMessage = isApiClientError(error)
-    ? error.message
-    : "Something went wrong. Please try again.";
+  useEffect(() => {
+    if (is404) navigate("/404", { replace: true });
+  }, [is404, navigate]);
 
-  if (isLoading) return <LoadingOverlay />;
+  // --- MEMOS ---
+  const longDescription = pokemon?.longDescription;
+  const sanitizedLongDescription = useMemo(
+    () => DOMPurify.sanitize(longDescription ?? ""),
+    [longDescription],
+  );
 
-  const cardStatus = pokemon ? getCardStatus(pokemon.healthPoints) : "default";
+  // --- POKEMON CARD RENDERING DETAILS ---
+  const cardVm = usePokemonCardCombat({
+    pokemon,
+    job: jobQuery.data,
+    isLocalStartJobError,
+    isLocalUseJobError,
+    startJobErrorMessage,
+    useJobErrorMessage,
+    jobId,
+  });
 
-  const typologyIcon = pokemon
-    ? getTypologyIcon(pokemon.typology.iconName, pokemon.typology.iconUrl)
-    : null;
+  // --- GUARDS ---
+  if (!pokemonId) return null;
+  if (is404) return null;
+  if (pokemonQuery.isLoading) return <LoadingOverlay />;
 
-  const vulnerabilityIcon = pokemon ? (
-    <img
-      src={pokemon.vulnerability.iconUrl}
-      alt="vulnerability"
-      style={{ width: "100%", height: "100%" }}
-    />
-  ) : null;
+  // --- COMBAT FEATURE HANDLING ---
+  const handleCombatStart = () => {
+    if (combatInfo.isFighting) return;
 
-  const widgetItems = pokemon
-    ? [
-        { icon: <EqualizerIcon />, label: `LV. ${pokemon.level}` },
-        { icon: vulnerabilityIcon, label: `VUL. ${pokemon.vulnerability.value}` },
-        {
-          icon: cardStatus === "expired" ? <SkullOutlineIcon /> : <HeartIcon />,
-          label: `PS. ${pokemon.healthPoints}`,
-          status: cardStatus,
+    if (cardVm.effectiveStatus === "expired") {
+      window.location.reload();
+      return;
+    }
+
+    if (jobId) qc.removeQueries({ queryKey: jobKeys.byId(jobId) });
+    setJobId(undefined);
+
+    startJob.mutate(
+      { itemId: pokemonId },
+      {
+        onSuccess: (data) => {
+          setJobId(data.job_id);
         },
-      ]
-    : [];
+      },
+    );
+  };
 
   return (
     <section className={styles.page}>
@@ -84,10 +132,10 @@ export default function DetailPage() {
                   </Button>
                 </div>
 
-                {isLocalError && (
+                {isLocalPokemonError && (
                   <TextBlock
                     variant="empty"
-                    description={errorMessage}
+                    description={pokemonErrorMessage}
                     className={styles["textBlock--error"]}
                   />
                 )}
@@ -106,7 +154,7 @@ export default function DetailPage() {
                     <div
                       className={styles["panel__top-left-description"]}
                       dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(pokemon.longDescription),
+                        __html: sanitizedLongDescription,
                       }}
                     />
                   </>
@@ -124,25 +172,34 @@ export default function DetailPage() {
                       description={pokemon.shortDescription}
                       imageSrc={pokemon.imageUrl}
                       typologyName={pokemon.typology.name}
-                      typologyIcon={typologyIcon}
+                      typologyIcon={cardVm.typologyIcon}
                       footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
-                      footerIcons={[typologyIcon, <StarIcon />]}
-                      items={widgetItems}
-                      status={cardStatus}
+                      footerIcons={[cardVm.typologyIcon, <StarIcon />]}
+                      items={cardVm.widgetItems}
+                      status={cardVm.effectiveStatus}
+                      showErrorOverlay={cardVm.showErrorOverlay}
+                      errorOverlayText={cardVm.errorOverlayText}
                     />
+                    <div className={styles["panel__top-right-pokemon-card-progress"]}>
+                      {cardVm.progressToShow != null ? (
+                        <ProgressBar progress={cardVm.progressToShow} />
+                      ) : (
+                        <>È tutto pronto, inizia la sfida!</>
+                      )}
+                    </div>
                   </div>
                   <Button
                     className={styles["panel__top-right-fight-button"]}
-                    onClick={() => {}}
-                    status="active"
+                    onClick={handleCombatStart}
+                    status={combatInfo.isFighting ? "disabled" : "active"}
                   >
-                    SIMULA COMBATTIMENTO
+                    {cardVm.buttonLabel}
                   </Button>
                 </div>
               )}
             </div>
 
-            {/* Related — placeholder image until endpoint is implemented */}
+            {/* Related — placeholder image as specified in the instructions */}
             {pokemon && (
               <div className={styles.panel__bottom}>
                 <img

@@ -2,6 +2,10 @@ import type { RemoteJob, RemoteJobStartResponse } from "@/types/remote/job";
 import type { RemotePokemonDetail, RemotePokemonListItem } from "@/types/remote/pokemon";
 
 /**
+ * TYPES
+ */
+
+/**
  * Internal mock record used to simulate backend job lifecycle.
  */
 type JobRecord = {
@@ -9,43 +13,36 @@ type JobRecord = {
   item_id: string;
   created_at: number;
   will_fail: boolean;
+  fail_at_progress: number | null;
   final_health_points: number;
 };
 
 export type Db = {
   pokemons: Map<string, RemotePokemonDetail>;
-  relatedById: Record<string, string[]>;
   jobs: Map<string, JobRecord>;
 };
 
-const now = () => Date.now();
+/**
+ * UTILS
+ */
 
+const now = () => Date.now();
 const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 /**
- * Time-based state machine.
- * queued → running → done/failed.
- * Progress grows based on elapsed time.
+ * HELPERS
  */
-const getJobStatusSnapshot = (job: JobRecord): RemoteJob => {
-  const elapsedMs = now() - job.created_at;
 
-  if (elapsedMs < 2000) {
-    return { status: "queued", progress: 0, health_points: null };
-  }
-
-  if (elapsedMs < 8000) {
-    const t = (elapsedMs - 2000) / 6000;
-    const progress = Math.min(99, Math.max(1, Math.floor(t * 100)));
-    return { status: "running", progress, health_points: null };
-  }
-
-  if (job.will_fail) {
-    return { status: "failed", progress: 100, health_points: null };
-  }
-
-  return { status: "done", progress: 100, health_points: job.final_health_points };
+const createJobId = () => `job_${Math.random().toString(16).slice(2)}_${now()}`;
+export const updatePokemonHealthPoints = (id: string, nextHp: number) => {
+  const current = db.pokemons.get(id);
+  if (!current) return;
+  db.pokemons.set(id, { ...current, health_points: nextHp });
 };
+
+/**
+ * DATABSE
+ */
 
 // ---- Pokemon seed (remote API shape) ----
 const pokemonsSeed: RemotePokemonDetail[] = [
@@ -155,23 +152,22 @@ const pokemonsSeed: RemotePokemonDetail[] = [
   },
 ];
 
-// Include some missing ids to simulate 404 on related click
-const relatedById: Record<string, string[]> = {
-  psyduck: ["sprigatito", "snorlax", "missing-1", "missing-2"],
-  sprigatito: ["psyduck", "fuecoco", "missing-3"],
-  snorlax: ["psyduck", "diglett", "missing-4"],
-  fuecoco: ["sprigatito", "magikarp", "missing-5"],
-  magikarp: ["psyduck", "diglett", "missing-6"],
-  diglett: ["snorlax", "magikarp", "missing-7"],
-};
+/**
+ * DB EXPORT
+ * Defined before API helpers to keep initialization order explicit.
+ * (No real TDZ risk here — functions reference `db` but do not execute before initialization.)
+ */
 
 export const db: Db = {
   pokemons: new Map(pokemonsSeed.map((p) => [p.id, p])),
-  relatedById,
   jobs: new Map(),
 };
 
-// ---- Pokemon helpers ----
+/**
+ * FUNCTIONS USED BY APIs
+ */
+
+// ---- Pokemon ----
 
 export const getPokemonList = (): RemotePokemonListItem[] =>
   Array.from(db.pokemons.values()).map((p) => ({
@@ -183,17 +179,7 @@ export const getPokemonList = (): RemotePokemonListItem[] =>
 
 export const getPokemonById = (id: string): RemotePokemonDetail | undefined => db.pokemons.get(id);
 
-export const getRelatedIds = (id: string): string[] => db.relatedById[id] ?? [];
-
-export const updatePokemonHealthPoints = (id: string, nextHp: number) => {
-  const current = db.pokemons.get(id);
-  if (!current) return;
-  db.pokemons.set(id, { ...current, health_points: nextHp });
-};
-
-// ---- Job helpers ----
-
-const createJobId = () => `job_${Math.random().toString(16).slice(2)}_${now()}`;
+// ---- Job ----
 
 /**
  * Creates a job linked to an item.
@@ -202,12 +188,18 @@ const createJobId = () => `job_${Math.random().toString(16).slice(2)}_${now()}`;
 export const createJobForItem = (itemId: string): RemoteJobStartResponse => {
   const job_id = createJobId();
 
+  const will_fail = Math.random() < 0.15;
+  // Preserve current HP across combat rounds (mock persistence)
+  const currentPokemon = db.pokemons.get(itemId);
+  const currentHp = currentPokemon?.health_points ?? 100;
+
   const record: JobRecord = {
     job_id,
     item_id: itemId,
     created_at: now(),
-    will_fail: Math.random() < 0.15,
-    final_health_points: randomInt(0, 100),
+    will_fail,
+    fail_at_progress: will_fail ? randomInt(5, 95) : null,
+    final_health_points: Math.max(0, currentHp - randomInt(5, 40)),
   };
 
   db.jobs.set(job_id, record);
@@ -230,4 +222,34 @@ export const getJobById = (jobId: string): RemoteJob | undefined => {
   }
 
   return snapshot;
+};
+
+/**
+ * JOB WORKER SIMULATOR
+ */
+
+/**
+ * Time-based state machine.
+ * queued → running → done/failed.
+ * Progress grows based on elapsed time.
+ */
+const getJobStatusSnapshot = (job: JobRecord): RemoteJob => {
+  const elapsedMs = now() - job.created_at;
+
+  if (elapsedMs < 2000) {
+    return { status: "queued", progress: 0, health_points: null };
+  }
+
+  if (elapsedMs < 8000) {
+    const t = (elapsedMs - 2000) / 6000;
+    const progress = Math.min(99, Math.max(1, Math.floor(t * 100)));
+
+    if (job.will_fail && job.fail_at_progress != null && progress >= job.fail_at_progress) {
+      return { status: "failed", progress, health_points: null };
+    }
+
+    return { status: "running", progress, health_points: null };
+  }
+
+  return { status: "done", progress: 100, health_points: job.final_health_points };
 };

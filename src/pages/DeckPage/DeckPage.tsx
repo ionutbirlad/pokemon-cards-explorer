@@ -9,11 +9,14 @@ import { isApiClientError, isGlobalError } from "@/lib/errors";
 import styles from "./DeckPage.module.scss";
 
 export default function DeckPage() {
+  // --- ROUTING ---
   const navigate = useNavigate();
+
+  // --- DATA ---
   const { data: pokemons, isError, error, isLoading } = usePokemonList();
 
+  // --- ERROR HANDLING ---
   const isLocalError = isError && !isGlobalError(error);
-
   const errorMessage = isApiClientError(error)
     ? error.message
     : "Something went wrong. Please try again.";
