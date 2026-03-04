@@ -75,7 +75,7 @@ export default function DetailPage() {
   );
 
   // --- POKEMON CARD RENDERING DETAILS ---
-  const vm = usePokemonCardCombat({
+  const cardVm = usePokemonCardCombat({
     pokemon,
     job: jobQuery.data,
     isLocalStartJobError,
@@ -94,7 +94,7 @@ export default function DetailPage() {
   const handleCombatStart = () => {
     if (combatInfo.isFighting) return;
 
-    if (vm.effectiveStatus === "expired") {
+    if (cardVm.effectiveStatus === "expired") {
       window.location.reload();
       return;
     }
@@ -172,17 +172,17 @@ export default function DetailPage() {
                       description={pokemon.shortDescription}
                       imageSrc={pokemon.imageUrl}
                       typologyName={pokemon.typology.name}
-                      typologyIcon={vm.typologyIcon}
+                      typologyIcon={cardVm.typologyIcon}
                       footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
-                      footerIcons={[vm.typologyIcon, <StarIcon />]}
-                      items={vm.widgetItems}
-                      status={vm.effectiveStatus}
-                      showErrorOverlay={vm.showErrorOverlay}
-                      errorOverlayText={vm.errorOverlayText}
+                      footerIcons={[cardVm.typologyIcon, <StarIcon />]}
+                      items={cardVm.widgetItems}
+                      status={cardVm.effectiveStatus}
+                      showErrorOverlay={cardVm.showErrorOverlay}
+                      errorOverlayText={cardVm.errorOverlayText}
                     />
                     <div className={styles["panel__top-right-pokemon-card-progress"]}>
-                      {vm.progressToShow != null ? (
-                        <ProgressBar progress={vm.progressToShow} />
+                      {cardVm.progressToShow != null ? (
+                        <ProgressBar progress={cardVm.progressToShow} />
                       ) : (
                         <>È tutto pronto, inizia la sfida!</>
                       )}
@@ -193,7 +193,7 @@ export default function DetailPage() {
                     onClick={handleCombatStart}
                     status={combatInfo.isFighting ? "disabled" : "active"}
                   >
-                    {vm.buttonLabel}
+                    {cardVm.buttonLabel}
                   </Button>
                 </div>
               )}
