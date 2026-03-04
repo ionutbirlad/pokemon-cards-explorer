@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import type { CardStatus } from "@/types/domain/ui";
 
 import CardFooter from "./CardFooter/CardFooter";
@@ -30,7 +32,7 @@ type PokemonCardProps = {
   errorOverlayText?: string;
 };
 
-export default function PokemonCard({
+function PokemonCard({
   number,
   name,
   description,
@@ -84,3 +86,5 @@ export default function PokemonCard({
     </div>
   );
 }
+
+export default memo(PokemonCard);

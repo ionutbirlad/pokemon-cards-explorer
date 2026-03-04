@@ -1,10 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
 import DOMPurify from "dompurify";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import ArrowBackIcon from "@/assets/icons/arrow_back.svg?react";
-import StarIcon from "@/assets/icons/star.svg?react";
 import LoadingOverlay from "@/components/LoadingOverlay/LoadingOverlay";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import Button from "@/components/ui/Button/Button";
@@ -20,8 +19,6 @@ import { isApiClientError, isGlobalError } from "@/lib/errors";
 
 import styles from "./DetailPage.module.scss";
 
-type CombatState = "idle" | "queued" | "running" | "done" | "failed";
-
 export default function DetailPage() {
   const [jobId, setJobId] = useState<string | undefined>(undefined);
 
@@ -35,12 +32,6 @@ export default function DetailPage() {
   const pokemon = pokemonQuery.data;
   const startJob = useStartJob();
   const jobQuery = useJob(jobId);
-  const combatInfo = {
-    progress: jobQuery.data?.progress,
-    status: jobQuery.data?.status,
-    isFighting: jobQuery.data?.status === "running" || jobQuery.data?.status === "queued",
-    state: jobId == null ? "idle" : ((jobQuery.data?.status ?? "queued") as CombatState),
-  };
 
   // --- ERROR HANDLING ---
   const isLocalPokemonError = pokemonQuery.isError && !isGlobalError(pokemonQuery.error);
@@ -85,14 +76,10 @@ export default function DetailPage() {
     jobId,
   });
 
-  // --- GUARDS ---
-  if (!pokemonId) return null;
-  if (is404) return null;
-  if (pokemonQuery.isLoading) return <LoadingOverlay />;
-
   // --- COMBAT FEATURE HANDLING ---
-  const handleCombatStart = () => {
-    if (combatInfo.isFighting) return;
+  const handleCombatStart = useCallback(() => {
+    if (!pokemonId) return;
+    if (cardVm.isFighting) return;
 
     if (cardVm.effectiveStatus === "expired") {
       window.location.reload();
@@ -110,7 +97,12 @@ export default function DetailPage() {
         },
       },
     );
-  };
+  }, [cardVm.isFighting, cardVm.effectiveStatus, jobId, qc, startJob, pokemonId]);
+
+  // --- GUARDS ---
+  if (!pokemonId) return null;
+  if (is404) return null;
+  if (pokemonQuery.isLoading) return <LoadingOverlay />;
 
   return (
     <section className={styles.page}>
@@ -174,7 +166,7 @@ export default function DetailPage() {
                       typologyName={pokemon.typology.name}
                       typologyIcon={cardVm.typologyIcon}
                       footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
-                      footerIcons={[cardVm.typologyIcon, <StarIcon />]}
+                      footerIcons={cardVm.footerIcons}
                       items={cardVm.widgetItems}
                       status={cardVm.effectiveStatus}
                       showErrorOverlay={cardVm.showErrorOverlay}
@@ -191,7 +183,7 @@ export default function DetailPage() {
                   <Button
                     className={styles["panel__top-right-fight-button"]}
                     onClick={handleCombatStart}
-                    status={combatInfo.isFighting ? "disabled" : "active"}
+                    status={cardVm.isFighting ? "disabled" : "active"}
                   >
                     {cardVm.buttonLabel}
                   </Button>
