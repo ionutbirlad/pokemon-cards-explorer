@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { fetchJobById } from "@/api/jobsApi";
-import { mapJob } from "@/api/mappers/job.mapper";
 
 import { jobKeys } from "./keys";
 
@@ -10,10 +9,7 @@ type JobStatus = "queued" | "running" | "done" | "failed";
 export function useJob(jobId: string | undefined) {
   return useQuery({
     queryKey: jobId ? jobKeys.byId(jobId) : jobKeys.byId(""),
-    queryFn: async ({ signal }) => {
-      const remoteJob = await fetchJobById(jobId as string, signal);
-      return mapJob(remoteJob, jobId as string);
-    },
+    queryFn: ({ signal }) => fetchJobById(jobId as string, signal),
     enabled: Boolean(jobId),
     // Poll job status every 1s until it reaches a terminal state (done | failed)
     refetchInterval: (query) => {
