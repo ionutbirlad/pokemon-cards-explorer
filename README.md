@@ -27,6 +27,15 @@ The project focuses on **clean architecture, maintainability, and predictable da
 
 ---
 
+# ▶️ Run Locally
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
 # 🏗 Architectural Principles
 
 The implementation follows a few guiding principles:
