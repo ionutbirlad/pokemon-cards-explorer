@@ -397,6 +397,20 @@ Components are split into two categories:
 
 ---
 
+# 🎯 Architectural Intent
+
+The goal of the architecture was to keep each concern isolated:
+
+- transport and network logic in the API layer
+- domain normalization through mappers
+- server state handled by TanStack Query
+- UI derivation centralized in ViewModels
+- components focused purely on presentation
+
+This separation keeps the system predictable, easier to test, and easier to evolve without cross-layer coupling.
+
+---
+
 # 📋 Design Decisions Summary
 
 | Decision                        | Rationale                                                         |
