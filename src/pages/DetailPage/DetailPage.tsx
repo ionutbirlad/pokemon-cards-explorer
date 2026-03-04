@@ -47,6 +47,13 @@ export default function DetailPage() {
   const isLocalStartJobError = startJob.isError && !isGlobalError(startJob.error);
   const isLocalUseJobError = jobQuery.isError && !isGlobalError(jobQuery.error);
   const is404 = isApiClientError(pokemonQuery.error) && pokemonQuery.error.status === 404;
+  const pokemonErrorMessage = isApiClientError(pokemonQuery.error)
+    ? pokemonQuery.error.message
+    : undefined;
+  const startJobErrorMessage = isApiClientError(startJob.error)
+    ? startJob.error.message
+    : undefined;
+  const useJobErrorMessage = isApiClientError(jobQuery.error) ? jobQuery.error.message : undefined;
 
   // --- SIDE EFFECTS ---
   useEffect(() => {
@@ -66,14 +73,6 @@ export default function DetailPage() {
     () => DOMPurify.sanitize(longDescription ?? ""),
     [longDescription],
   );
-
-  const pokemonErrorMessage = isApiClientError(pokemonQuery.error)
-    ? pokemonQuery.error.message
-    : undefined;
-  const startJobErrorMessage = isApiClientError(startJob.error)
-    ? startJob.error.message
-    : undefined;
-  const useJobErrorMessage = isApiClientError(jobQuery.error) ? jobQuery.error.message : undefined;
 
   // --- POKEMON CARD RENDERING DETAILS ---
   const vm = usePokemonCardCombat({
