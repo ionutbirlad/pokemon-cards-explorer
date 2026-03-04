@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { type ReactNode, useMemo } from "react";
 
 import { getTypologyIcon } from "@/api/mappers/typology.mapper";
 import EqualizerIcon from "@/assets/icons/equalizer.svg?react";
@@ -16,7 +16,6 @@ type PokemonCardCombatViewModel = {
   effectiveHp: number;
   effectiveStatus: CardStatus;
   typologyIcon: ReactNode;
-  vulnerabilityIcon: ReactNode;
   widgetItems: { icon: ReactNode; label: string; status?: CardStatus }[];
   footerIcons: ReactNode[];
   showErrorOverlay: boolean;
@@ -59,31 +58,37 @@ export function usePokemonCardCombat({
 
   const isFighting = combatState === "running" || combatState === "queued";
 
-  const typologyIcon = pokemon
-    ? getTypologyIcon(pokemon.typology.iconName, pokemon.typology.iconUrl)
-    : null;
+  const typologyIcon = useMemo(() => {
+    return pokemon ? getTypologyIcon(pokemon.typology.iconName, pokemon.typology.iconUrl) : null;
+  }, [pokemon]);
 
-  const vulnerabilityIcon = pokemon ? (
-    <img
-      src={pokemon.vulnerability.iconUrl}
-      alt="vulnerability"
-      style={{ width: "100%", height: "100%" }}
-    />
-  ) : null;
+  const vulnerabilityIcon = useMemo(() => {
+    return pokemon ? (
+      <img
+        src={pokemon.vulnerability.iconUrl}
+        alt="vulnerability"
+        style={{ width: "100%", height: "100%" }}
+      />
+    ) : null;
+  }, [pokemon]);
 
-  const widgetItems = pokemon
-    ? [
-        { icon: <EqualizerIcon />, label: `LV. ${pokemon.level}` },
-        { icon: vulnerabilityIcon, label: `VUL. ${pokemon.vulnerability.value}` },
-        {
-          icon: effectiveStatus === "expired" ? <SkullOutlineIcon /> : <HeartIcon />,
-          label: `PS. ${effectiveHp}`,
-          status: effectiveStatus,
-        },
-      ]
-    : [];
+  const widgetItems = useMemo(() => {
+    return pokemon
+      ? [
+          { icon: <EqualizerIcon />, label: `LV. ${pokemon.level}` },
+          { icon: vulnerabilityIcon, label: `VUL. ${pokemon.vulnerability.value}` },
+          {
+            icon: effectiveStatus === "expired" ? <SkullOutlineIcon /> : <HeartIcon />,
+            label: `PS. ${effectiveHp}`,
+            status: effectiveStatus,
+          },
+        ]
+      : [];
+  }, [pokemon, effectiveHp, effectiveStatus, vulnerabilityIcon]);
 
-  const footerIcons = pokemon ? [typologyIcon, <StarIcon />] : [];
+  const footerIcons = useMemo(() => {
+    return pokemon ? [typologyIcon, <StarIcon />] : [];
+  }, [pokemon, typologyIcon]);
 
   const showErrorOverlay = isLocalStartJobError || isLocalUseJobError || job?.status === "failed";
 
@@ -114,7 +119,6 @@ export function usePokemonCardCombat({
     effectiveHp,
     effectiveStatus,
     typologyIcon,
-    vulnerabilityIcon,
     widgetItems,
     footerIcons,
     showErrorOverlay,

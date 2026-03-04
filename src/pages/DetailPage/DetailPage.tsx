@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import ArrowBackIcon from "@/assets/icons/arrow_back.svg?react";
-import StarIcon from "@/assets/icons/star.svg?react";
 import LoadingOverlay from "@/components/LoadingOverlay/LoadingOverlay";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import Button from "@/components/ui/Button/Button";
@@ -174,7 +173,7 @@ export default function DetailPage() {
                       typologyName={pokemon.typology.name}
                       typologyIcon={cardVm.typologyIcon}
                       footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
-                      footerIcons={[cardVm.typologyIcon, <StarIcon />]}
+                      footerIcons={cardVm.footerIcons}
                       items={cardVm.widgetItems}
                       status={cardVm.effectiveStatus}
                       showErrorOverlay={cardVm.showErrorOverlay}
