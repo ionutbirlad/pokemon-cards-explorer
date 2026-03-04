@@ -3,11 +3,7 @@ import DOMPurify from "dompurify";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { getTypologyIcon } from "@/api/mappers/typology.mapper";
 import ArrowBackIcon from "@/assets/icons/arrow_back.svg?react";
-import EqualizerIcon from "@/assets/icons/equalizer.svg?react";
-import HeartIcon from "@/assets/icons/favorite.svg?react";
-import SkullOutlineIcon from "@/assets/icons/skull_outline.svg?react";
 import StarIcon from "@/assets/icons/star.svg?react";
 import LoadingOverlay from "@/components/LoadingOverlay/LoadingOverlay";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
@@ -19,8 +15,8 @@ import { useJob } from "@/hooks/jobs/useJob";
 import { useStartJob } from "@/hooks/jobs/useStartJob";
 import { pokemonKeys } from "@/hooks/pokemon/keys";
 import { usePokemon } from "@/hooks/pokemon/usePokemon";
+import { usePokemonCardCombat } from "@/hooks/viewModels/usePokemonCardCombat.viewmodel";
 import { isApiClientError, isGlobalError } from "@/lib/errors";
-import { getCardStatus } from "@/utils/getCardStatus";
 
 import styles from "./DetailPage.module.scss";
 
@@ -71,11 +67,6 @@ export default function DetailPage() {
     [longDescription],
   );
 
-  // --- GUARDS ---
-  if (!pokemonId) return null;
-  if (is404) return null;
-  if (pokemonQuery.isLoading) return <LoadingOverlay />;
-
   const pokemonErrorMessage = isApiClientError(pokemonQuery.error)
     ? pokemonQuery.error.message
     : undefined;
@@ -85,69 +76,26 @@ export default function DetailPage() {
   const useJobErrorMessage = isApiClientError(jobQuery.error) ? jobQuery.error.message : undefined;
 
   // --- POKEMON CARD RENDERING DETAILS ---
-  const baseHp = pokemon?.healthPoints ?? 0;
-  const effectiveHp =
-    jobQuery.data?.status === "done" && jobQuery.data.health_points != null
-      ? jobQuery.data.health_points
-      : baseHp;
+  const vm = usePokemonCardCombat({
+    pokemon,
+    job: jobQuery.data,
+    isLocalStartJobError,
+    isLocalUseJobError,
+    startJobErrorMessage,
+    useJobErrorMessage,
+    jobId,
+  });
 
-  const effectiveStatus = getCardStatus(effectiveHp);
-
-  const typologyIcon = pokemon
-    ? getTypologyIcon(pokemon.typology.iconName, pokemon.typology.iconUrl)
-    : null;
-
-  const vulnerabilityIcon = pokemon ? (
-    <img
-      src={pokemon.vulnerability.iconUrl}
-      alt="vulnerability"
-      style={{ width: "100%", height: "100%" }}
-    />
-  ) : null;
-
-  const widgetItems = pokemon
-    ? [
-        { icon: <EqualizerIcon />, label: `LV. ${pokemon.level}` },
-        { icon: vulnerabilityIcon, label: `VUL. ${pokemon.vulnerability.value}` },
-        {
-          icon: effectiveStatus === "expired" ? <SkullOutlineIcon /> : <HeartIcon />,
-          label: `PS. ${effectiveHp}`,
-          status: effectiveStatus,
-        },
-      ]
-    : [];
-
-  const showErrorOverlay =
-    isLocalStartJobError || isLocalUseJobError || combatInfo.status === "failed";
-  const errorOverlayText = startJobErrorMessage || useJobErrorMessage || undefined;
-
-  const progressToShow =
-    combatInfo.state === "queued" || combatInfo.state === "running"
-      ? (jobQuery.data?.progress ?? 0)
-      : combatInfo.state === "done" || combatInfo.state === "failed"
-        ? 100
-        : null;
-
-  const hasLost = combatInfo.state === "done" && effectiveStatus === "expired";
-
-  const hasWon = combatInfo.state === "done" && !hasLost;
-
-  const buttonLabel =
-    combatInfo.state === "running" || combatInfo.state === "queued"
-      ? "STA COMBATTENDO..."
-      : combatInfo.state === "failed"
-        ? "Errore tecnico. Riprova"
-        : hasLost
-          ? "HAI PERSO... RIPROVA!"
-          : hasWon
-            ? "HAI VINTO! RIGIOCA"
-            : "SIMULA COMBATTIMENTO";
+  // --- GUARDS ---
+  if (!pokemonId) return null;
+  if (is404) return null;
+  if (pokemonQuery.isLoading) return <LoadingOverlay />;
 
   // --- COMBAT FEATURE HANDLING ---
   const handleCombatStart = () => {
     if (combatInfo.isFighting) return;
 
-    if (effectiveStatus === "expired") {
+    if (vm.effectiveStatus === "expired") {
       window.location.reload();
       return;
     }
@@ -225,17 +173,17 @@ export default function DetailPage() {
                       description={pokemon.shortDescription}
                       imageSrc={pokemon.imageUrl}
                       typologyName={pokemon.typology.name}
-                      typologyIcon={typologyIcon}
+                      typologyIcon={vm.typologyIcon}
                       footerLabel={pokemon.rarity.replace(/_/g, " ").toUpperCase()}
-                      footerIcons={[typologyIcon, <StarIcon />]}
-                      items={widgetItems}
-                      status={effectiveStatus}
-                      showErrorOverlay={showErrorOverlay}
-                      errorOverlayText={errorOverlayText}
+                      footerIcons={[vm.typologyIcon, <StarIcon />]}
+                      items={vm.widgetItems}
+                      status={vm.effectiveStatus}
+                      showErrorOverlay={vm.showErrorOverlay}
+                      errorOverlayText={vm.errorOverlayText}
                     />
                     <div className={styles["panel__top-right-pokemon-card-progress"]}>
-                      {progressToShow != null ? (
-                        <ProgressBar progress={progressToShow} />
+                      {vm.progressToShow != null ? (
+                        <ProgressBar progress={vm.progressToShow} />
                       ) : (
                         <>È tutto pronto, inizia la sfida!</>
                       )}
@@ -246,7 +194,7 @@ export default function DetailPage() {
                     onClick={handleCombatStart}
                     status={combatInfo.isFighting ? "disabled" : "active"}
                   >
-                    {buttonLabel}
+                    {vm.buttonLabel}
                   </Button>
                 </div>
               )}
