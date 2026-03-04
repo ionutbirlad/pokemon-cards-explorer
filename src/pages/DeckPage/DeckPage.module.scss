@@ -1,0 +1,18 @@
+.page {
+  padding-block: var(--size-2xl);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: var(--size-xl);
+  margin-top: var(--size-xl);
+
+  &__item {
+    display: contents;
+  }
+}
+
+.textBlock--error {
+  margin-top: var(--size-2xl);
+}

@@ -1,0 +1,29 @@
+@use "@/styles/tokens/typography" as t;
+
+.progressBarWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--size-xl);
+}
+
+.progressBar {
+  flex: 1;
+  height: var(--size-l);
+  border-radius: var(--radius-infinite);
+  background-color: var(--color-surface-1-contrast);
+  overflow: hidden;
+
+  &__fill {
+    height: 100%;
+    border-radius: var(--radius-infinite);
+    background-color: var(--color-on-surface-1);
+    transition: width 0.3s ease;
+  }
+
+  &__label {
+    @include t.paragraph-1;
+
+    min-width: 36px;
+    text-align: right;
+  }
+}

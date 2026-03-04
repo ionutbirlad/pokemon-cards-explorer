@@ -1,0 +1,63 @@
+:root {
+  /* ========================================
+   * Primitive colors
+   * ====================================== */
+
+  /* Neutrals */
+  --p-color-neutral-0: #ffffff;
+  --p-color-neutral-10: #f2f4f8;
+  --p-color-neutral-20: #e9edf3;
+  --p-color-neutral-30: #dee4ec;
+  --p-color-neutral-40: #c7cfda;
+  --p-color-neutral-50: #9ba8ba;
+  --p-color-neutral-60: #6a7d9d;
+  --p-color-neutral-70: #354052;
+  --p-color-neutral-80: #101a2e;
+  --p-color-neutral-90: #0c1320;
+  --p-color-neutral-100: #000000;
+
+  /* Red */
+  --p-color-red-0: #ffffff;
+  --p-color-red-10: #ffebeb;
+  --p-color-red-20: #ffdddd;
+  --p-color-red-30: #ffcbcb;
+  --p-color-red-40: #ffa2a2;
+  --p-color-red-50: #ff5656;
+  --p-color-red-60: #ff0808;
+  --p-color-red-70: #c30101;
+  --p-color-red-80: #8c0202;
+  --p-color-red-90: #2e0000;
+  --p-color-red-100: #000000;
+
+  /* Alpha */
+  --p-alpha-0: rgba(255, 255, 255, 0.3);
+  --p-alpha-25: rgba(255, 255, 255, 0.2);
+  --p-alpha-50: rgba(255, 255, 255, 0.1);
+  --p-alpha-75: rgba(16, 26, 46, 0.05);
+  --p-alpha-100: rgba(16, 26, 46, 0.1);
+
+  /* ========================================
+   * Semantic colors
+   * ====================================== */
+
+  /* Surface 1 */
+  --color-surface-1: var(--p-color-neutral-0);
+  --color-surface-1-contrast: var(--p-color-neutral-50);
+  --color-on-surface-1: var(--p-color-neutral-80);
+  --color-on-surface-1-contrast-dark: var(--p-alpha-75);
+  --color-on-surface-1-contrast-light: var(--p-alpha-0);
+
+  /* Surface 2 */
+  --color-surface-2: var(--p-color-neutral-10);
+  --color-surface-2-contrast: var(--p-color-neutral-60);
+  --color-on-surface-2: var(--p-color-neutral-90);
+  --color-on-surface-2-contrast-dark: var(--p-alpha-75);
+  --color-on-surface-2-contrast-light: var(--p-alpha-0);
+
+  /* Alert */
+  --color-alert: var(--p-color-red-80);
+  --color-on-alert: var(--p-color-red-0);
+
+  /* Shadow */
+  --shadow-card: -2px 4px 6px 0px var(--p-alpha-75);
+}

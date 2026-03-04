@@ -1,0 +1,65 @@
+@use "@/styles/tokens/typography" as t;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-l);
+
+  height: 40px;
+  padding-inline: var(--size-2xl);
+  padding-block: var(--size-l);
+
+  border-radius: var(--radius-infinite);
+  border: none;
+  cursor: pointer;
+
+  @include t.label-1;
+  white-space: nowrap;
+
+  transition: background-color 0.2s ease;
+
+  // ---- Active ----
+  &--active {
+    background-color: var(--color-on-surface-1);
+    color: var(--color-surface-1);
+
+    &:hover {
+      background-color: var(--color-surface-1-contrast);
+    }
+  }
+
+  // ---- Hover (static variant) ----
+  &--hover {
+    background-color: var(--color-surface-1-contrast);
+    color: var(--color-surface-1);
+  }
+
+  // ---- Disabled ----
+  &--disabled {
+    background-color: var(--color-surface-2-contrast);
+    color: var(--color-surface-1);
+    cursor: not-allowed;
+    pointer-events: none;
+
+    .button__icon {
+      opacity: 0.5;
+    }
+  }
+
+  // ---- Icon ----
+  &__icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    fill: currentColor;
+    display: block;
+  }
+
+  // ---- Label ----
+  &__label {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+  }
+}

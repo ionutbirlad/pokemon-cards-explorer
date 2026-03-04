@@ -1,0 +1,7 @@
+.widget {
+  display: flex;
+  align-items: center;
+  gap: var(--size-xl);
+
+  background-color: var(--color-on-surface-1-contrast-dark);
+}

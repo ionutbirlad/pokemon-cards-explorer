@@ -1,0 +1,17 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import AppFooter from "./AppFooter";
+
+const meta: Meta<typeof AppFooter> = {
+  title: "Components/AppFooter",
+  component: AppFooter,
+  tags: ["autodocs"],
+  parameters: {
+    layout: "fullscreen",
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof AppFooter>;
+
+export const Default: Story = {};

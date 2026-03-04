@@ -1,0 +1,19 @@
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--size-xl);
+
+  background-color: var(--color-surface-1);
+  box-shadow: var(--shadow-card);
+
+  &__logo {
+    height: 45px;
+    width: auto;
+
+    @media (min-width: 768px) {
+      height: 51px;
+    }
+  }
+}
